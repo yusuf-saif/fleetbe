@@ -1,0 +1,752 @@
+name: 'Vehicle Assignments'
+description: |-
+
+  APIs for managing vehicle assignments
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/v1/vehicle-assignments/current
+    metadata:
+      groupName: 'Vehicle Assignments'
+      groupDescription: |-
+
+        APIs for managing vehicle assignments
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List current active vehicle assignments'
+      description: 'Returns all assignments that are currently active (released_at is null or in the future)'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      driver_id:
+        name: driver_id
+        description: 'nullable Filter by driver ID.'
+        required: false
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      vehicle_id:
+        name: vehicle_id
+        description: 'nullable Filter by vehicle ID.'
+        required: false
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      driver_id: 2
+      vehicle_id: 5
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "vehicle_id": 5,
+                "driver_id": 2,
+                "starting_odometer": "1200.50",
+                "assigned_at": "2025-09-11T08:00:00.000000Z",
+                "released_at": null,
+                "vehicle": { "id": 5, "plate_number": "ABC123" },
+                "driver": { "id": 2, "name": "John Doe" }
+              }
+            ]
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/v1/vehicle-assignments/driver/{driver_id}'
+    metadata:
+      groupName: 'Vehicle Assignments'
+      groupDescription: |-
+
+        APIs for managing vehicle assignments
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List all assignments for a specific driver'
+      description: ''
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      driver_id:
+        name: driver_id
+        description: 'Driver ID.'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      driver_id: 2
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "vehicle_id": 5,
+                "driver_id": 2,
+                "starting_odometer": "1200.50",
+                "assigned_at": "2025-09-11T08:00:00.000000Z",
+                "released_at": null,
+                "vehicle": { "id": 5, "plate_number": "ABC123" }
+              }
+            ]
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/v1/vehicle-assignments/vehicle/{vehicle_id}'
+    metadata:
+      groupName: 'Vehicle Assignments'
+      groupDescription: |-
+
+        APIs for managing vehicle assignments
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List all assignments for a specific vehicle'
+      description: ''
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      vehicle_id:
+        name: vehicle_id
+        description: 'Vehicle ID.'
+        required: true
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      vehicle_id: 5
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "vehicle_id": 5,
+                "driver_id": 2,
+                "starting_odometer": "1200.50",
+                "assigned_at": "2025-09-11T08:00:00.000000Z",
+                "released_at": null,
+                "driver": { "id": 2, "name": "John Doe" }
+              }
+            ]
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/v1/vehicle-assignments/{assignment_id}/release'
+    metadata:
+      groupName: 'Vehicle Assignments'
+      groupDescription: |-
+
+        APIs for managing vehicle assignments
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Release a vehicle assignment'
+      description: 'Marks the vehicle as available again after its assignment ends.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      assignment_id:
+        name: assignment_id
+        description: 'The ID of the assignment.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      assignment:
+        name: assignment
+        description: 'The ID of the vehicle assignment.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      assignment_id: 16
+      assignment: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      released_at:
+        name: released_at
+        description: |-
+          The date and time the vehicle was released.
+          Must be on or after the assigned_at date.
+        required: true
+        example: '2025-09-30 14:30:00'
+        type: date
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      released_at: '2025-09-30 14:30:00'
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "id": 1,
+            "vehicle_id": 10,
+            "driver_id": 5,
+            "starting_odometer": 12000,
+            "assigned_by_id": 2,
+            "assigned_to_id": 3,
+            "assigned_at": "2025-09-29 09:00:00",
+            "released_at": "2025-09-30 14:30:00",
+            "vehicle": {
+              "id": 10,
+              "title": "Toyota Hilux",
+              "status": "available"
+            },
+            "driver": {
+              "id": 5,
+              "name": "John Doe"
+            },
+            "assigned_by": {
+              "id": 2,
+              "name": "Jane Smith"
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 409
+        content: |-
+          {
+            "message": "This assignment has already been released."
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 422
+        content: |-
+          {
+            "message": "The given data was invalid.",
+            "errors": {
+              "released_at": [
+                "The released at field is required."
+              ]
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/v1/vehicle-assignments
+    metadata:
+      groupName: 'Vehicle Assignments'
+      groupDescription: |-
+
+        APIs for managing vehicle assignments
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List vehicle assignments'
+      description: 'Returns all vehicle assignments. Supports optional filtering by driver or vehicle.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      driver_id:
+        name: driver_id
+        description: 'Filter by driver ID.'
+        required: false
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      vehicle_id:
+        name: vehicle_id
+        description: 'Filter by vehicle ID.'
+        required: false
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      driver_id: 2
+      vehicle_id: 5
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "vehicle_id": 5,
+                "driver_id": 2,
+                "starting_odometer": "1200.50",
+                "assigned_by_id": 1,
+                "assigned_at": "2025-09-11T08:00:00.000000Z",
+                "released_at": null,
+                "vehicle": { "id": 5, "plate_number": "ABC123" },
+                "driver": { "id": 2, "name": "John Doe" },
+                "assignedBy": { "id": 1, "name": "Admin Staff" }
+              }
+            ]
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/vehicle-assignments
+    metadata:
+      groupName: 'Vehicle Assignments'
+      groupDescription: |-
+
+        APIs for managing vehicle assignments
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create a vehicle assignment'
+      description: 'Assign a vehicle to a driver.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      vehicle_id:
+        name: vehicle_id
+        description: 'Vehicle ID.'
+        required: true
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      driver_id:
+        name: driver_id
+        description: 'Driver ID.'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      starting_odometer:
+        name: starting_odometer
+        description: 'nullable Starting odometer.'
+        required: false
+        example: 1200.5
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      assigned_by_id:
+        name: assigned_by_id
+        description: 'nullable Staff ID who assigned the vehicle.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      assigned_to_id:
+        name: assigned_to_id
+        description: 'nullable Staff ID who assigned the vehicle.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      assigned_at:
+        name: assigned_at
+        description: 'nullable Assignment start time.'
+        required: false
+        example: '"2025-09-11 08:00:00"'
+        type: datetime
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      released_at:
+        name: released_at
+        description: 'nullable Assignment end time.'
+        required: false
+        example: '"2025-09-20 17:00:00"'
+        type: datetime
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+    cleanBodyParameters:
+      vehicle_id: 5
+      driver_id: 2
+      starting_odometer: 1200.5
+      assigned_by_id: 1
+      assigned_to_id: 1
+      assigned_at: '"2025-09-11 08:00:00"'
+      released_at: '"2025-09-20 17:00:00"'
+    fileParameters: []
+    responses:
+      -
+        status: 201
+        content: |-
+          {
+            "id": 1,
+            "vehicle_id": 5,
+            "driver_id": 2,
+            "starting_odometer": "1200.50",
+            "assigned_by_id": 1,
+            "assigned_to_id": 2,
+            "assigned_at": "2025-09-11T08:00:00.000000Z",
+            "released_at": null,
+            "vehicle": { "id": 5, "plate_number": "ABC123" },
+            "driver": { "id": 2, "name": "John Doe" },
+            "assignedBy": { "id": 1, "name": "Admin Staff" }
+            "assignedTo": { "id": 1, "name": "Company Staff" }
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/v1/vehicle-assignments/{id}'
+    metadata:
+      groupName: 'Vehicle Assignments'
+      groupDescription: |-
+
+        APIs for managing vehicle assignments
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Show vehicle assignment'
+      description: 'Get details of a single assignment.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'Assignment ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "id": 1,
+            "vehicle_id": 5,
+            "driver_id": 2,
+            "starting_odometer": "1200.50",
+            "assigned_by_id": 1,
+            "assigned_at": "2025-09-11T08:00:00.000000Z",
+            "released_at": null,
+            "vehicle": { "id": 5, "plate_number": "ABC123" },
+            "driver": { "id": 2, "name": "John Doe" },
+            "assignedBy": { "id": 1, "name": "Admin Staff" }
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PUT
+      - PATCH
+    uri: 'api/v1/vehicle-assignments/{id}'
+    metadata:
+      groupName: 'Vehicle Assignments'
+      groupDescription: |-
+
+        APIs for managing vehicle assignments
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update vehicle assignment'
+      description: 'Update the assignment details, e.g., released_at.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'Assignment ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      starting_odometer:
+        name: starting_odometer
+        description: 'nullable Starting odometer.'
+        required: false
+        example: 1200.5
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      assigned_by_id:
+        name: assigned_by_id
+        description: 'nullable Staff ID who assigned the vehicle.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      assigned_at:
+        name: assigned_at
+        description: 'nullable Assignment start time.'
+        required: false
+        example: '"2025-09-11 08:00:00"'
+        type: datetime
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      released_at:
+        name: released_at
+        description: 'nullable Assignment end time.'
+        required: false
+        example: '"2025-09-20 17:00:00"'
+        type: datetime
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+    cleanBodyParameters:
+      starting_odometer: 1200.5
+      assigned_by_id: 1
+      assigned_at: '"2025-09-11 08:00:00"'
+      released_at: '"2025-09-20 17:00:00"'
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "id": 1,
+            "vehicle_id": 5,
+            "driver_id": 2,
+            "starting_odometer": "1200.50",
+            "assigned_by_id": 1,
+            "assigned_at": "2025-09-11T08:00:00.000000Z",
+            "released_at": "2025-09-20T17:00:00.000000Z",
+            "vehicle": { "id": 5, "plate_number": "ABC123" },
+            "driver": { "id": 2, "name": "John Doe" },
+            "assignedBy": { "id": 1, "name": "Admin Staff" }
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/vehicle-assignments/{id}'
+    metadata:
+      groupName: 'Vehicle Assignments'
+      groupDescription: |-
+
+        APIs for managing vehicle assignments
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Delete vehicle assignment'
+      description: 'Remove a vehicle assignment record.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'Assignment ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 204
+        content: '{}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []

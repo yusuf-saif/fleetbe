@@ -20,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        \Illuminate\Support\Facades\Gate::define('viewScalar', function ($user = null) {
+            return true;
+        });
+
         Relation::morphMap([
             'fuel' => \App\Models\Fuel::class,
             'spare_part' => \App\Models\SparePart::class,

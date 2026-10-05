@@ -1,0 +1,501 @@
+name: 'Resource & Maintenance Requests'
+description: |-
+
+  APIs for managing fuel, spare part, and maintenance requests
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/v1/requests
+    metadata:
+      groupName: 'Resource & Maintenance Requests'
+      groupDescription: |-
+
+        APIs for managing fuel, spare part, and maintenance requests
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List requests'
+      description: 'Returns all requests, optionally filtered by vehicle, driver, type, or status.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      vehicle_id:
+        name: vehicle_id
+        description: 'Filter by vehicle ID.'
+        required: false
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      driver_id:
+        name: driver_id
+        description: 'Filter by driver ID.'
+        required: false
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      requestable_type:
+        name: requestable_type
+        description: 'Filter by type: fuel, spare_part, maintenance.'
+        required: false
+        example: '"fuel"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      status:
+        name: status
+        description: 'Filter by request status.'
+        required: false
+        example: '"pending"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      current:
+        name: current
+        description: 'Filter only current requests.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      vehicle_id: 5
+      driver_id: 2
+      requestable_type: '"fuel"'
+      status: '"pending"'
+      current: true
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "vehicle_id": 5,
+                "driver_id": 2,
+                "approved_by_id": 1,
+                "checked_by_id": null,
+                "previous_id": null,
+                "current_request": true,
+                "requestable_type": "fuel",
+                "requestable_id": 10,
+                "quantity_requested": "100.00",
+                "quantity_approved": "80.00",
+                "vehicle_odometer": "1200.50",
+                "current_fuel_level": "20.50",
+                "maintenance_type": null,
+                "description": null,
+                "with_sparepart": false,
+                "spare_part_id": null,
+                "other_sparepart": null,
+                "status": "approved",
+                "created_at": "2025-09-11T08:00:00.000000Z"
+              }
+            ]
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/requests
+    metadata:
+      groupName: 'Resource & Maintenance Requests'
+      groupDescription: |-
+
+        APIs for managing fuel, spare part, and maintenance requests
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create a new request'
+      description: 'Create a fuel, spare part, or maintenance request.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      vehicle_id:
+        name: vehicle_id
+        description: 'Vehicle ID.'
+        required: true
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      driver_id:
+        name: driver_id
+        description: 'Driver ID.'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      requestable_type:
+        name: requestable_type
+        description: 'Type of request: fuel, spare_part, maintenance.'
+        required: true
+        example: '"fuel"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      requestable_id:
+        name: requestable_id
+        description: 'ID of the requested resource.'
+        required: true
+        example: 10
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      quantity_requested:
+        name: quantity_requested
+        description: 'nullable Quantity requested (fuel/spare part).'
+        required: false
+        example: 100.5
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      vehicle_odometer:
+        name: vehicle_odometer
+        description: 'nullable Vehicle odometer (fuel requests).'
+        required: false
+        example: 1200.5
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      current_fuel_level:
+        name: current_fuel_level
+        description: 'nullable Current fuel level (fuel requests).'
+        required: false
+        example: 20.5
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      maintenance_type:
+        name: maintenance_type
+        description: 'nullable Maintenance type: preventive, corrective, predictive.'
+        required: false
+        example: '"preventive"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      description:
+        name: description
+        description: 'nullable Maintenance description.'
+        required: false
+        example: '"Engine check"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      with_sparepart:
+        name: with_sparepart
+        description: 'Flag if maintenance requires a spare part.'
+        required: true
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      spare_part_id:
+        name: spare_part_id
+        description: 'nullable ID of spare part if it exists.'
+        required: false
+        example: 3
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      other_sparepart:
+        name: other_sparepart
+        description: 'nullable Custom spare part name if not in database.'
+        required: false
+        example: '"Custom fan belt"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+    cleanBodyParameters:
+      vehicle_id: 5
+      driver_id: 2
+      requestable_type: '"fuel"'
+      requestable_id: 10
+      quantity_requested: 100.5
+      vehicle_odometer: 1200.5
+      current_fuel_level: 20.5
+      maintenance_type: '"preventive"'
+      description: '"Engine check"'
+      with_sparepart: true
+      spare_part_id: 3
+      other_sparepart: '"Custom fan belt"'
+    fileParameters: []
+    responses:
+      -
+        status: 201
+        content: |-
+          {
+            "id": 1,
+            "vehicle_id": 5,
+            "driver_id": 2,
+            "requestable_type": "maintenance",
+            "requestable_id": 10,
+            "quantity_requested": null,
+            "with_sparepart": true,
+            "spare_part_id": 3,
+            "other_sparepart": null,
+            "status": "pending",
+            "current_request": true
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/v1/requests/{id}'
+    metadata:
+      groupName: 'Resource & Maintenance Requests'
+      groupDescription: |-
+
+        APIs for managing fuel, spare part, and maintenance requests
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Show a request'
+      description: ''
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'Request ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "id": 1,
+            "vehicle_id": 5,
+            "driver_id": 2,
+            "requestable_type": "fuel",
+            "requestable_id": 10,
+            "quantity_requested": "100.50",
+            "with_sparepart": false,
+            "status": "pending",
+            "current_request": true
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/v1/requests/{id}/approve'
+    metadata:
+      groupName: 'Resource & Maintenance Requests'
+      groupDescription: |-
+
+        APIs for managing fuel, spare part, and maintenance requests
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Approve a request'
+      description: 'Set status to approved and optionally set quantity approved.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'Request ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      quantity_approved:
+        name: quantity_approved
+        description: 'nullable Quantity approved.'
+        required: false
+        example: 80.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+    cleanBodyParameters:
+      quantity_approved: 80.0
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "id": 1,
+            "status": "approved",
+            "quantity_approved": "80.00"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/v1/requests/{id}/reject'
+    metadata:
+      groupName: 'Resource & Maintenance Requests'
+      groupDescription: |-
+
+        APIs for managing fuel, spare part, and maintenance requests
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Reject a request'
+      description: 'Set status to rejected.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'Request ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      reason:
+        name: reason
+        description: 'nullable Reason for rejection.'
+        required: false
+        example: '"Insufficient stock"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      reason: '"Insufficient stock"'
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "id": 1,
+            "status": "rejected"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []

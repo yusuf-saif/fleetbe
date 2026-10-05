@@ -1,0 +1,3941 @@
+openapi: 3.0.3
+info:
+  title: 'FleetManagement API Documentation'
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost'
+tags:
+  -
+    name: Authentication
+    description: ''
+  -
+    name: 'Driver Authentication'
+    description: ''
+  -
+    name: Drivers
+    description: 'This endpoint registers a new driver in the system.'
+  -
+    name: Endpoints
+    description: ''
+  -
+    name: Fuels
+    description: ''
+  -
+    name: Maintenances
+    description: "\nAPIs for managing maintenance configurations"
+  -
+    name: 'Resource & Maintenance Requests'
+    description: "\nAPIs for managing fuel, spare part, and maintenance requests"
+  -
+    name: 'Spare Parts'
+    description: "\nAPIs for managing spare parts"
+  -
+    name: Suppliers
+    description: "\nAPIs for managing suppliers"
+  -
+    name: 'Vehicle Assignments'
+    description: "\nAPIs for managing vehicle assignments"
+  -
+    name: Vehicles
+    description: ''
+paths:
+  /api/v1/auth/register:
+    post:
+      summary: 'Register a new user'
+      operationId: registerANewUser
+      description: 'This endpoint registers a user and returns the user details with a token.'
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'User registered and logged in successfully'
+                  user:
+                    id: 1
+                    name: 'Hassan Sani'
+                    email: hassan@example.com
+                properties:
+                  message:
+                    type: string
+                    example: 'User registered and logged in successfully'
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Hassan Sani'
+                      email:
+                        type: string
+                        example: hassan@example.com
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the user.'
+                  example: 'Hassan Sani'
+                  nullable: false
+                email:
+                  type: string
+                  description: 'The email of the user.'
+                  example: hassan@example.com
+                  nullable: false
+                password:
+                  type: string
+                  description: 'The password.'
+                  example: secret123
+                  nullable: false
+                password_confirmation:
+                  type: string
+                  description: 'Confirm the password.'
+                  example: secret123
+                  nullable: false
+              required:
+                - name
+                - email
+                - password
+                - password_confirmation
+      security: []
+  /api/v1/auth/login:
+    post:
+      summary: 'Login a user'
+      operationId: loginAUser
+      description: 'This endpoint allows a user to log in and receive a Bearer token.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Login successful'
+                  token: 1|ZpRzVvq4UIq2p...xyz
+                  user:
+                    id: 1
+                    name: 'Hassan Sani'
+                    email: hassan@example.com
+                    organization_staff:
+                      id: 5
+                      staff_position: Manager
+                      staff_status: Active
+                      staff_level: Senior
+                      organization:
+                        id: 2
+                        organization_name: 'Finecore Ltd'
+                properties:
+                  message:
+                    type: string
+                    example: 'Login successful'
+                  token:
+                    type: string
+                    example: 1|ZpRzVvq4UIq2p...xyz
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Hassan Sani'
+                      email:
+                        type: string
+                        example: hassan@example.com
+                      organization_staff:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 5
+                          staff_position:
+                            type: string
+                            example: Manager
+                          staff_status:
+                            type: string
+                            example: Active
+                          staff_level:
+                            type: string
+                            example: Senior
+                          organization:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 2
+                              organization_name:
+                                type: string
+                                example: 'Finecore Ltd'
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'The user’s email.'
+                  example: hassan@example.com
+                  nullable: false
+                password:
+                  type: string
+                  description: 'The user’s password.'
+                  example: secret123
+                  nullable: false
+              required:
+                - email
+                - password
+      security: []
+  /api/v1/auth/logout:
+    post:
+      summary: 'Logout the current user'
+      operationId: logoutTheCurrentUser
+      description: 'This endpoint revokes the current access token.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Logged out successfully'
+                properties:
+                  message:
+                    type: string
+                    example: 'Logged out successfully'
+      tags:
+        - Authentication
+  /api/v1/auth/forgot-password:
+    post:
+      summary: 'Forgot password (send reset link)'
+      operationId: forgotPasswordsendResetLink
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: gbailey@example.net
+                  nullable: false
+              required:
+                - email
+      security: []
+  /api/v1/auth/reset-password:
+    post:
+      summary: 'Reset password'
+      operationId: resetPassword
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: false
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: zbailey@example.net
+                  nullable: false
+                password:
+                  type: string
+                  description: 'Must be at least 6 characters.'
+                  example: '-0pBNvYgxw'
+                  nullable: false
+              required:
+                - token
+                - email
+                - password
+      security: []
+  /api/v1/driver/login:
+    post:
+      summary: 'Login a driver'
+      operationId: loginADriver
+      description: 'This endpoint allows a user to log in and receive a Bearer token.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Login successful'
+                  token: 1|ZpRzVvq4UIq2p...xyz
+                  user:
+                    id: 1
+                    name: 'Hassan Sani'
+                    email: hassan@example.com
+                properties:
+                  message:
+                    type: string
+                    example: 'Login successful'
+                  token:
+                    type: string
+                    example: 1|ZpRzVvq4UIq2p...xyz
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Hassan Sani'
+                      email:
+                        type: string
+                        example: hassan@example.com
+      tags:
+        - 'Driver Authentication'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'The user’s email.'
+                  example: hassan@example.com
+                  nullable: false
+                password:
+                  type: string
+                  description: 'The user’s password.'
+                  example: secret123
+                  nullable: false
+              required:
+                - email
+                - password
+      security: []
+  /api/v1/driver/change-password:
+    post:
+      summary: ''
+      operationId: postApiV1DriverChangePassword
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Driver Authentication'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address. The <code>email</code> of an existing record in the drivers table.'
+                  example: gbailey@example.net
+                  nullable: false
+                pin:
+                  type: string
+                  description: 'Must be 6 digits.'
+                  example: '569775'
+                  nullable: false
+                new_password:
+                  type: string
+                  description: 'Must be at least 6 characters.'
+                  example: ngzmiyvdljnikhwaykcmyuwpwlvqwrsitcpscqldzsnrwt
+                  nullable: false
+              required:
+                - email
+                - pin
+                - new_password
+      security: []
+  /api/v1/driver/forgot-password:
+    post:
+      summary: 'Forgot password (send reset link)'
+      operationId: forgotPasswordsendResetLink
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Driver Authentication'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: gbailey@example.net
+                  nullable: false
+              required:
+                - email
+      security: []
+  /api/v1/driver/reset-password:
+    post:
+      summary: 'Reset password'
+      operationId: resetPassword
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Driver Authentication'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: false
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: zbailey@example.net
+                  nullable: false
+                password:
+                  type: string
+                  description: 'Must be at least 6 characters.'
+                  example: '-0pBNvYgxw'
+                  nullable: false
+              required:
+                - token
+                - email
+                - password
+      security: []
+  /api/v1/driver/logout:
+    post:
+      summary: ''
+      operationId: postApiV1DriverLogout
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Driver Authentication'
+      security: []
+  /api/v1/driver/register:
+    post:
+      summary: 'Register a new driver'
+      operationId: registerANewDriver
+      description: ''
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  name: 'John Doe'
+                  email: john@example.com
+                  phone_number: '08012345678'
+                  organization_id: 1
+                  driver_license: ABC12345
+                  license_expiry_date: '2026-05-01'
+                  next_kin_name: 'Jane Doe'
+                  next_kin_relationship: Sister
+                  next_kin_phone: '08098765432'
+                  next_kin_email: jane@example.com
+                  next_kin_residential_address: '10 First Avenue, Abuja'
+                  blood_group: O+
+                  genotype: AA
+                  allergies:
+                    - Peanuts
+                    - Dust
+                  medical_challenge:
+                    - Asthma
+                    - Hypertension
+                  eye_condition:
+                    - Short-sightedness
+                  residential_address: '12 Main Street, Abuja'
+                  home_address: '5 Old Road, Kano'
+                  state: Lagos
+                  lga: Ikeja
+                  town: Ojodu
+                  nationality: Nigerian
+                  state_of_origin: Kaduna
+                  lga_of_origin: Zaria
+                  town_of_origin: Samaru
+                  date_of_birth: '1990-06-15'
+                  created_at: '2025-09-20T10:00:00.000000Z'
+                  updated_at: '2025-09-20T10:00:00.000000Z'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: 'John Doe'
+                  email:
+                    type: string
+                    example: john@example.com
+                  phone_number:
+                    type: string
+                    example: '08012345678'
+                  organization_id:
+                    type: integer
+                    example: 1
+                  driver_license:
+                    type: string
+                    example: ABC12345
+                  license_expiry_date:
+                    type: string
+                    example: '2026-05-01'
+                  next_kin_name:
+                    type: string
+                    example: 'Jane Doe'
+                  next_kin_relationship:
+                    type: string
+                    example: Sister
+                  next_kin_phone:
+                    type: string
+                    example: '08098765432'
+                  next_kin_email:
+                    type: string
+                    example: jane@example.com
+                  next_kin_residential_address:
+                    type: string
+                    example: '10 First Avenue, Abuja'
+                  blood_group:
+                    type: string
+                    example: O+
+                  genotype:
+                    type: string
+                    example: AA
+                  allergies:
+                    type: array
+                    example:
+                      - Peanuts
+                      - Dust
+                    items:
+                      type: string
+                  medical_challenge:
+                    type: array
+                    example:
+                      - Asthma
+                      - Hypertension
+                    items:
+                      type: string
+                  eye_condition:
+                    type: array
+                    example:
+                      - Short-sightedness
+                    items:
+                      type: string
+                  residential_address:
+                    type: string
+                    example: '12 Main Street, Abuja'
+                  home_address:
+                    type: string
+                    example: '5 Old Road, Kano'
+                  state:
+                    type: string
+                    example: Lagos
+                  lga:
+                    type: string
+                    example: Ikeja
+                  town:
+                    type: string
+                    example: Ojodu
+                  nationality:
+                    type: string
+                    example: Nigerian
+                  state_of_origin:
+                    type: string
+                    example: Kaduna
+                  lga_of_origin:
+                    type: string
+                    example: Zaria
+                  town_of_origin:
+                    type: string
+                    example: Samaru
+                  date_of_birth:
+                    type: string
+                    example: '1990-06-15'
+                  created_at:
+                    type: string
+                    example: '2025-09-20T10:00:00.000000Z'
+                  updated_at:
+                    type: string
+                    example: '2025-09-20T10:00:00.000000Z'
+      tags:
+        - Drivers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: "The driver's full name."
+                  example: 'John Doe'
+                  nullable: false
+                email:
+                  type: string
+                  description: 'Unique email address.'
+                  example: john@example.com
+                  nullable: false
+                phone_number:
+                  type: string
+                  description: 'Unique phone number.'
+                  example: '08012345678'
+                  nullable: false
+                password:
+                  type: string
+                  description: "The driver's password (nullable, default is generated if empty)."
+                  example: secret123
+                  nullable: true
+                organization_id:
+                  type: integer
+                  description: 'The ID of the organization the driver belongs to.'
+                  example: 1
+                  nullable: false
+                driver_license:
+                  type: string
+                  description: "The driver's license number."
+                  example: ABC12345
+                  nullable: false
+                license_expiry_date:
+                  type: date
+                  description: "Expiry date of the driver's license."
+                  example: '2026-05-01'
+                  nullable: false
+                next_kin_name:
+                  type: string
+                  description: "The next of kin's name."
+                  example: 'Jane Doe'
+                  nullable: true
+                next_kin_relationship:
+                  type: string
+                  description: 'The relationship with next of kin.'
+                  example: Sister
+                  nullable: true
+                next_kin_phone:
+                  type: string
+                  description: "The next of kin's phone number."
+                  example: '08098765432'
+                  nullable: true
+                next_kin_email:
+                  type: string
+                  description: "The next of kin's email address."
+                  example: jane@example.com
+                  nullable: true
+                next_kin_residential_address:
+                  type: string
+                  description: 'The residential address of next of kin.'
+                  example: '10 First Avenue, Abuja'
+                  nullable: true
+                blood_group:
+                  type: string
+                  description: 'The blood group of the driver.'
+                  example: O+
+                  nullable: true
+                genotype:
+                  type: string
+                  description: 'The genotype of the driver.'
+                  example: AA
+                  nullable: true
+                allergies:
+                  type: array
+                  description: 'A list of allergies (array of strings).'
+                  example:
+                    - Peanuts
+                    - Dust
+                  items:
+                    type: string
+                medical_challenge:
+                  type: array
+                  description: 'A list of medical challenges (array of strings).'
+                  example:
+                    - Asthma
+                    - Hypertension
+                  items:
+                    type: string
+                eye_condition:
+                  type: array
+                  description: 'A list of eye conditions (array of strings).'
+                  example:
+                    - Short-sightedness
+                  items:
+                    type: string
+                residential_address:
+                  type: string
+                  description: 'The residential address of the driver.'
+                  example: '12 Main Street, Abuja'
+                  nullable: true
+                home_address:
+                  type: string
+                  description: 'The home address of the driver.'
+                  example: '5 Old Road, Kano'
+                  nullable: true
+                state:
+                  type: string
+                  description: 'The state where the driver lives.'
+                  example: Lagos
+                  nullable: true
+                lga:
+                  type: string
+                  description: 'The LGA where the driver lives.'
+                  example: Ikeja
+                  nullable: true
+                town:
+                  type: string
+                  description: 'The town where the driver lives.'
+                  example: Ojodu
+                  nullable: true
+                nationality:
+                  type: string
+                  description: 'The nationality of the driver.'
+                  example: Nigerian
+                  nullable: true
+                state_of_origin:
+                  type: string
+                  description: 'The state of origin.'
+                  example: Kaduna
+                  nullable: true
+                lga_of_origin:
+                  type: string
+                  description: 'The LGA of origin.'
+                  example: Zaria
+                  nullable: true
+                town_of_origin:
+                  type: string
+                  description: 'The town of origin.'
+                  example: Samaru
+                  nullable: true
+                date_of_birth:
+                  type: date
+                  description: 'The date of birth.'
+                  example: '1990-06-15'
+                  nullable: true
+              required:
+                - name
+                - email
+                - phone_number
+                - organization_id
+                - driver_license
+                - license_expiry_date
+      security: []
+  /api/v1/driver:
+    get:
+      summary: 'List drivers'
+      operationId: listDrivers
+      description: 'Paginated list of drivers. Each driver includes `organization` and `vehicles`.'
+      parameters:
+        -
+          in: query
+          name: page
+          description: 'The page number.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'The page number.'
+            example: 1
+            nullable: false
+        -
+          in: query
+          name: per_page
+          description: 'Results per page.'
+          example: 10
+          required: false
+          schema:
+            type: integer
+            description: 'Results per page.'
+            example: 10
+            nullable: false
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      name: 'John Doe'
+                      email: john@example.com
+                      organization:
+                        id: 1
+                        name: 'Org Ltd'
+                      vehicles:
+                        -
+                          id: 2
+                          name: 'Toyota Hiace'
+                          plate_number: ABC123
+                  links: {  }
+                  meta: {  }
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'John Doe'
+                        email: john@example.com
+                        organization:
+                          id: 1
+                          name: 'Org Ltd'
+                        vehicles:
+                          -
+                            id: 2
+                            name: 'Toyota Hiace'
+                            plate_number: ABC123
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'John Doe'
+                        email:
+                          type: string
+                          example: john@example.com
+                        organization:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: 'Org Ltd'
+                        vehicles:
+                          type: array
+                          example:
+                            -
+                              id: 2
+                              name: 'Toyota Hiace'
+                              plate_number: ABC123
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 2
+                              name:
+                                type: string
+                                example: 'Toyota Hiace'
+                              plate_number:
+                                type: string
+                                example: ABC123
+                  links:
+                    type: object
+                    properties: {  }
+                  meta:
+                    type: object
+                    properties: {  }
+      tags:
+        - Drivers
+      security: []
+  '/api/v1/driver/{id}':
+    get:
+      summary: 'Get a driver'
+      operationId: getADriver
+      description: 'Returns a driver with `organization` and `vehicles`.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  name: 'John Doe'
+                  email: john@example.com
+                  organization:
+                    id: 1
+                    name: 'Org Ltd'
+                  vehicles:
+                    -
+                      id: 2
+                      name: 'Toyota Hiace'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: 'John Doe'
+                  email:
+                    type: string
+                    example: john@example.com
+                  organization:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Org Ltd'
+                  vehicles:
+                    type: array
+                    example:
+                      -
+                        id: 2
+                        name: 'Toyota Hiace'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 2
+                        name:
+                          type: string
+                          example: 'Toyota Hiace'
+      tags:
+        - Drivers
+      security: []
+    delete:
+      summary: 'Delete a driver'
+      operationId: deleteADriver
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Driver deleted successfully'
+                properties:
+                  message:
+                    type: string
+                    example: 'Driver deleted successfully'
+      tags:
+        - Drivers
+      security: []
+    put:
+      summary: 'Update a driver'
+      operationId: updateADriver
+      description: 'Update driver fields. Password is optional; when present it will be hashed.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Driver updated successfully'
+                  data:
+                    id: 1
+                    name: 'Updated Name'
+                    organization:
+                      id: 1
+                      name: 'Org Ltd'
+                    vehicles: []
+                properties:
+                  message:
+                    type: string
+                    example: 'Driver updated successfully'
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Updated Name'
+                      organization:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            example: 'Org Ltd'
+                      vehicles:
+                        type: array
+                        example: []
+      tags:
+        - Drivers
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: "The driver's name."
+                  example: architecto
+                  nullable: false
+                email:
+                  type: string
+                  description: "The driver's email."
+                  example: gbailey@example.net
+                  nullable: false
+                phone_number:
+                  type: string
+                  description: "The driver's phone number."
+                  example: architecto
+                  nullable: false
+                password:
+                  type: string
+                  description: 'The new password (optional).'
+                  example: '|]|{+-'
+                  nullable: true
+                next_kin_name:
+                  type: string
+                  description: "Next of kin name.\n// (other fields may be provided; see model for full list)"
+                  example: architecto
+                  nullable: true
+                next_kin_relationship:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: w
+                  nullable: true
+                next_kin_phone:
+                  type: string
+                  description: 'Must not be greater than 20 characters.'
+                  example: aykcmyuwpwlvqwrs
+                  nullable: true
+                next_kin_email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: bauch.marcelo@example.com
+                  nullable: true
+                next_kin_residential_address:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: true
+                blood_group:
+                  type: string
+                  description: ''
+                  example: null
+                  nullable: true
+                genotype:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: true
+                allergies:
+                  type: array
+                  description: 'Must not be greater than 255 characters.'
+                  example:
+                    - 'n'
+                  items:
+                    type: string
+                medical_challenge:
+                  type: array
+                  description: 'Must not be greater than 255 characters.'
+                  example:
+                    - g
+                  items:
+                    type: string
+                eye_condition:
+                  type: array
+                  description: 'Must not be greater than 255 characters.'
+                  example:
+                    - z
+                  items:
+                    type: string
+                residential_address:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: true
+                home_address:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: true
+                state:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: true
+                lga:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: true
+                town:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: true
+                nationality:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: true
+                state_of_origin:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: true
+                lga_of_origin:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: true
+                town_of_origin:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: true
+                date_of_birth:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2026-10-05T19:57:07'
+                  nullable: true
+                driver_license:
+                  type: string
+                  description: 'Driver license number.'
+                  example: architecto
+                  nullable: true
+                license_expiry_date:
+                  type: date
+                  description: 'License expiry date (YYYY-MM-DD).'
+                  example: architecto
+                  nullable: true
+                must_change_password:
+                  type: boolean
+                  description: ''
+                  example: true
+                  nullable: false
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the driver.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/status:
+    get:
+      summary: ''
+      operationId: getApiV1Status
+      description: ''
+      parameters: []
+      responses:
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: false
+                  message: "SQLSTATE[08006] [7] connection to server at \"127.0.0.1\", port 5432 failed: Connection refused\n\tIs the server running on that host and accepting TCP/IP connections? (Connection: pgsql, SQL: select * from \"cache\" where \"key\" in (fleetmanagement-cache-a75f3f172bfb296f2e10cbfc6dfc1883))"
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "SQLSTATE[08006] [7] connection to server at \"127.0.0.1\", port 5432 failed: Connection refused\n\tIs the server running on that host and accepting TCP/IP connections? (Connection: pgsql, SQL: select * from \"cache\" where \"key\" in (fleetmanagement-cache-a75f3f172bfb296f2e10cbfc6dfc1883))"
+      tags:
+        - Endpoints
+      security: []
+  /api/v1/fuel:
+    get:
+      summary: 'Get all fuels'
+      operationId: getAllFuels
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  data:
+                    -
+                      id: 1
+                      title: 'Petrol Reserve'
+                      fuel_type: petrol
+                      reserve_level: '5000.00'
+                      unit: l
+                      quantity_allocated: '1200.00'
+                      quantity_remaining: '3800.00'
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        title: 'Petrol Reserve'
+                        fuel_type: petrol
+                        reserve_level: '5000.00'
+                        unit: l
+                        quantity_allocated: '1200.00'
+                        quantity_remaining: '3800.00'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        title:
+                          type: string
+                          example: 'Petrol Reserve'
+                        fuel_type:
+                          type: string
+                          example: petrol
+                        reserve_level:
+                          type: string
+                          example: '5000.00'
+                        unit:
+                          type: string
+                          example: l
+                        quantity_allocated:
+                          type: string
+                          example: '1200.00'
+                        quantity_remaining:
+                          type: string
+                          example: '3800.00'
+      tags:
+        - Fuels
+    post:
+      summary: 'Create a new fuel'
+      operationId: createANewFuel
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Fuels
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'The fuel title.'
+                  example: 'Petrol Reserve'
+                  nullable: false
+                fuel_type:
+                  type: string
+                  description: 'Type of fuel (petrol, diesel, gas).'
+                  example: petrol
+                  nullable: false
+                reserve_level:
+                  type: number
+                  description: 'Initial reserve level.'
+                  example: 5000.0
+                  nullable: true
+                unit:
+                  type: string
+                  description: 'The measurement unit.'
+                  example: l
+                  nullable: true
+                quantity_allocated:
+                  type: number
+                  description: 'The allocated quantity.'
+                  example: 1000.0
+                  nullable: true
+                quantity_remaining:
+                  type: number
+                  description: 'The remaining quantity.'
+                  example: 4000.0
+                  nullable: true
+                organization_id:
+                  type: integer
+                  description: 'The owning organization ID.'
+                  example: 1
+                  nullable: false
+              required:
+                - title
+                - fuel_type
+                - organization_id
+  '/api/v1/fuel/{id}':
+    get:
+      summary: 'Get a single fuel'
+      operationId: getASingleFuel
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: false
+                  message: Unauthenticated
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Unauthenticated
+      tags:
+        - Fuels
+    put:
+      summary: 'Update a fuel'
+      operationId: updateAFuel
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Fuels
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: false
+                fuel_type:
+                  type: string
+                  description: ''
+                  example: gas
+                  nullable: false
+                  enum:
+                    - petrol
+                    - diesel
+                    - gas
+                reserve_level:
+                  type: number
+                  description: 'Must be at least 0.'
+                  example: 39
+                  nullable: true
+                unit:
+                  type: string
+                  description: 'Must not be greater than 10 characters.'
+                  example: gzmiyv
+                  nullable: true
+                quantity_allocated:
+                  type: number
+                  description: 'Must be at least 0.'
+                  example: 42
+                  nullable: true
+                quantity_remaining:
+                  type: number
+                  description: 'Must be at least 0.'
+                  example: 37
+                  nullable: true
+                organization_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the organizations table.'
+                  example: null
+                  nullable: false
+    delete:
+      summary: 'Delete a fuel'
+      operationId: deleteAFuel
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Fuels
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the fuel.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/maintenance:
+    get:
+      summary: 'List Maintenances'
+      operationId: listMaintenances
+      description: ''
+      parameters:
+        -
+          in: query
+          name: organization_id
+          description: 'Filter by organization.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filter by organization.'
+            example: 1
+            nullable: false
+        -
+          in: query
+          name: per_page
+          description: 'Results per page.'
+          example: 20
+          required: false
+          schema:
+            type: integer
+            description: 'Results per page.'
+            example: 20
+            nullable: false
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: false
+                  message: Unauthenticated
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Unauthenticated
+      tags:
+        - Maintenances
+      security: []
+    post:
+      summary: 'Create Maintenance'
+      operationId: createMaintenance
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Maintenances
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Maintenance title.'
+                  example: 'Oil Change'
+                  nullable: false
+                type:
+                  type: string
+                  description: 'Maintenance type.'
+                  example: preventive
+                  nullable: false
+                frequency:
+                  type: string
+                  description: 'Maintenance frequency.'
+                  example: monthly
+                  nullable: true
+                organization_id:
+                  type: integer
+                  description: 'Organization ID.'
+                  example: 1
+                  nullable: false
+              required:
+                - title
+                - type
+                - organization_id
+      security: []
+  '/api/v1/maintenance/{id}':
+    get:
+      summary: 'Show Maintenance'
+      operationId: showMaintenance
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: false
+                  message: Unauthenticated
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Unauthenticated
+      tags:
+        - Maintenances
+      security: []
+    put:
+      summary: 'Update Maintenance'
+      operationId: updateMaintenance
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Maintenances
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: b
+                  nullable: false
+                type:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: 'n'
+                  nullable: false
+                frequency:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: g
+                  nullable: true
+                organization_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the organizations table.'
+                  example: architecto
+                  nullable: false
+              required:
+                - title
+                - type
+                - organization_id
+      security: []
+    delete:
+      summary: 'Delete Maintenance'
+      operationId: deleteMaintenance
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Maintenances
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'Maintenance ID.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/requests:
+    get:
+      summary: 'List requests'
+      operationId: listRequests
+      description: 'Returns all requests, optionally filtered by vehicle, driver, type, or status.'
+      parameters:
+        -
+          in: query
+          name: vehicle_id
+          description: 'Filter by vehicle ID.'
+          example: 5
+          required: false
+          schema:
+            type: integer
+            description: 'Filter by vehicle ID.'
+            example: 5
+            nullable: false
+        -
+          in: query
+          name: driver_id
+          description: 'Filter by driver ID.'
+          example: 2
+          required: false
+          schema:
+            type: integer
+            description: 'Filter by driver ID.'
+            example: 2
+            nullable: false
+        -
+          in: query
+          name: requestable_type
+          description: 'Filter by type: fuel, spare_part, maintenance.'
+          example: '"fuel"'
+          required: false
+          schema:
+            type: string
+            description: 'Filter by type: fuel, spare_part, maintenance.'
+            example: '"fuel"'
+            nullable: false
+        -
+          in: query
+          name: status
+          description: 'Filter by request status.'
+          example: '"pending"'
+          required: false
+          schema:
+            type: string
+            description: 'Filter by request status.'
+            example: '"pending"'
+            nullable: false
+        -
+          in: query
+          name: current
+          description: 'Filter only current requests.'
+          example: true
+          required: false
+          schema:
+            type: boolean
+            description: 'Filter only current requests.'
+            example: true
+            nullable: false
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      vehicle_id: 5
+                      driver_id: 2
+                      approved_by_id: 1
+                      checked_by_id: null
+                      previous_id: null
+                      current_request: true
+                      requestable_type: fuel
+                      requestable_id: 10
+                      quantity_requested: '100.00'
+                      quantity_approved: '80.00'
+                      vehicle_odometer: '1200.50'
+                      current_fuel_level: '20.50'
+                      maintenance_type: null
+                      description: null
+                      with_sparepart: false
+                      spare_part_id: null
+                      other_sparepart: null
+                      status: approved
+                      created_at: '2025-09-11T08:00:00.000000Z'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        vehicle_id: 5
+                        driver_id: 2
+                        approved_by_id: 1
+                        checked_by_id: null
+                        previous_id: null
+                        current_request: true
+                        requestable_type: fuel
+                        requestable_id: 10
+                        quantity_requested: '100.00'
+                        quantity_approved: '80.00'
+                        vehicle_odometer: '1200.50'
+                        current_fuel_level: '20.50'
+                        maintenance_type: null
+                        description: null
+                        with_sparepart: false
+                        spare_part_id: null
+                        other_sparepart: null
+                        status: approved
+                        created_at: '2025-09-11T08:00:00.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        vehicle_id:
+                          type: integer
+                          example: 5
+                        driver_id:
+                          type: integer
+                          example: 2
+                        approved_by_id:
+                          type: integer
+                          example: 1
+                        checked_by_id:
+                          type: string
+                          example: null
+                        previous_id:
+                          type: string
+                          example: null
+                        current_request:
+                          type: boolean
+                          example: true
+                        requestable_type:
+                          type: string
+                          example: fuel
+                        requestable_id:
+                          type: integer
+                          example: 10
+                        quantity_requested:
+                          type: string
+                          example: '100.00'
+                        quantity_approved:
+                          type: string
+                          example: '80.00'
+                        vehicle_odometer:
+                          type: string
+                          example: '1200.50'
+                        current_fuel_level:
+                          type: string
+                          example: '20.50'
+                        maintenance_type:
+                          type: string
+                          example: null
+                        description:
+                          type: string
+                          example: null
+                        with_sparepart:
+                          type: boolean
+                          example: false
+                        spare_part_id:
+                          type: string
+                          example: null
+                        other_sparepart:
+                          type: string
+                          example: null
+                        status:
+                          type: string
+                          example: approved
+                        created_at:
+                          type: string
+                          example: '2025-09-11T08:00:00.000000Z'
+      tags:
+        - 'Resource & Maintenance Requests'
+    post:
+      summary: 'Create a new request'
+      operationId: createANewRequest
+      description: 'Create a fuel, spare part, or maintenance request.'
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  vehicle_id: 5
+                  driver_id: 2
+                  requestable_type: maintenance
+                  requestable_id: 10
+                  quantity_requested: null
+                  with_sparepart: true
+                  spare_part_id: 3
+                  other_sparepart: null
+                  status: pending
+                  current_request: true
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  vehicle_id:
+                    type: integer
+                    example: 5
+                  driver_id:
+                    type: integer
+                    example: 2
+                  requestable_type:
+                    type: string
+                    example: maintenance
+                  requestable_id:
+                    type: integer
+                    example: 10
+                  quantity_requested:
+                    type: string
+                    example: null
+                  with_sparepart:
+                    type: boolean
+                    example: true
+                  spare_part_id:
+                    type: integer
+                    example: 3
+                  other_sparepart:
+                    type: string
+                    example: null
+                  status:
+                    type: string
+                    example: pending
+                  current_request:
+                    type: boolean
+                    example: true
+      tags:
+        - 'Resource & Maintenance Requests'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                vehicle_id:
+                  type: integer
+                  description: 'Vehicle ID.'
+                  example: 5
+                  nullable: false
+                driver_id:
+                  type: integer
+                  description: 'Driver ID.'
+                  example: 2
+                  nullable: false
+                requestable_type:
+                  type: string
+                  description: 'Type of request: fuel, spare_part, maintenance.'
+                  example: '"fuel"'
+                  nullable: false
+                requestable_id:
+                  type: integer
+                  description: 'ID of the requested resource.'
+                  example: 10
+                  nullable: false
+                quantity_requested:
+                  type: number
+                  description: 'nullable Quantity requested (fuel/spare part).'
+                  example: 100.5
+                  nullable: true
+                vehicle_odometer:
+                  type: number
+                  description: 'nullable Vehicle odometer (fuel requests).'
+                  example: 1200.5
+                  nullable: true
+                current_fuel_level:
+                  type: number
+                  description: 'nullable Current fuel level (fuel requests).'
+                  example: 20.5
+                  nullable: true
+                maintenance_type:
+                  type: string
+                  description: 'nullable Maintenance type: preventive, corrective, predictive.'
+                  example: '"preventive"'
+                  nullable: true
+                description:
+                  type: string
+                  description: 'nullable Maintenance description.'
+                  example: '"Engine check"'
+                  nullable: true
+                with_sparepart:
+                  type: boolean
+                  description: 'Flag if maintenance requires a spare part.'
+                  example: true
+                  nullable: false
+                spare_part_id:
+                  type: integer
+                  description: 'nullable ID of spare part if it exists.'
+                  example: 3
+                  nullable: true
+                other_sparepart:
+                  type: string
+                  description: 'nullable Custom spare part name if not in database.'
+                  example: '"Custom fan belt"'
+                  nullable: true
+              required:
+                - vehicle_id
+                - driver_id
+                - requestable_type
+                - requestable_id
+                - with_sparepart
+  '/api/v1/requests/{id}':
+    get:
+      summary: 'Show a request'
+      operationId: showARequest
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  vehicle_id: 5
+                  driver_id: 2
+                  requestable_type: fuel
+                  requestable_id: 10
+                  quantity_requested: '100.50'
+                  with_sparepart: false
+                  status: pending
+                  current_request: true
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  vehicle_id:
+                    type: integer
+                    example: 5
+                  driver_id:
+                    type: integer
+                    example: 2
+                  requestable_type:
+                    type: string
+                    example: fuel
+                  requestable_id:
+                    type: integer
+                    example: 10
+                  quantity_requested:
+                    type: string
+                    example: '100.50'
+                  with_sparepart:
+                    type: boolean
+                    example: false
+                  status:
+                    type: string
+                    example: pending
+                  current_request:
+                    type: boolean
+                    example: true
+      tags:
+        - 'Resource & Maintenance Requests'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'Request ID.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/requests/{id}/approve':
+    post:
+      summary: 'Approve a request'
+      operationId: approveARequest
+      description: 'Set status to approved and optionally set quantity approved.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  status: approved
+                  quantity_approved: '80.00'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  status:
+                    type: string
+                    example: approved
+                  quantity_approved:
+                    type: string
+                    example: '80.00'
+      tags:
+        - 'Resource & Maintenance Requests'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity_approved:
+                  type: number
+                  description: 'nullable Quantity approved.'
+                  example: 80.0
+                  nullable: true
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'Request ID.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/requests/{id}/reject':
+    post:
+      summary: 'Reject a request'
+      operationId: rejectARequest
+      description: 'Set status to rejected.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  status: rejected
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  status:
+                    type: string
+                    example: rejected
+      tags:
+        - 'Resource & Maintenance Requests'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  description: 'nullable Reason for rejection.'
+                  example: '"Insufficient stock"'
+                  nullable: false
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'Request ID.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/sparepart:
+    get:
+      summary: 'List Spare Parts'
+      operationId: listSpareParts
+      description: ''
+      parameters:
+        -
+          in: query
+          name: organization_id
+          description: 'Filter by organization.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Filter by organization.'
+            example: 1
+            nullable: false
+        -
+          in: query
+          name: per_page
+          description: 'Results per page.'
+          example: 20
+          required: false
+          schema:
+            type: integer
+            description: 'Results per page.'
+            example: 20
+            nullable: false
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: false
+                  message: Unauthenticated
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Unauthenticated
+      tags:
+        - 'Spare Parts'
+      security: []
+    post:
+      summary: 'Create Spare Part'
+      operationId: createSparePart
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Spare Parts'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'The spare part name.'
+                  example: 'Brake Pad'
+                  nullable: false
+                size:
+                  type: string
+                  description: 'The size.'
+                  example: Medium
+                  nullable: true
+                description:
+                  type: string
+                  description: 'The description.'
+                  example: 'Eius et animi quos velit et.'
+                  nullable: true
+                reserve_quantity:
+                  type: integer
+                  description: 'Default reserve stock.'
+                  example: 10
+                  nullable: true
+                unit:
+                  type: string
+                  description: 'Unit of measurement.'
+                  example: pcs
+                  nullable: true
+                quantity_allocated:
+                  type: integer
+                  description: 'Allocated stock.'
+                  example: 50
+                  nullable: true
+                quantity_remaining:
+                  type: integer
+                  description: 'Remaining stock.'
+                  example: 20
+                  nullable: true
+                organization_id:
+                  type: integer
+                  description: 'The organization.'
+                  example: 1
+                  nullable: false
+              required:
+                - title
+                - organization_id
+      security: []
+  '/api/v1/sparepart/{id}':
+    get:
+      summary: 'Show Spare Part'
+      operationId: showSparePart
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: false
+                  message: Unauthenticated
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Unauthenticated
+      tags:
+        - 'Spare Parts'
+      security: []
+    put:
+      summary: 'Update Spare Part'
+      operationId: updateSparePart
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Spare Parts'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: b
+                  nullable: false
+                size:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: 'n'
+                  nullable: true
+                description:
+                  type: string
+                  description: ''
+                  example: 'Eius et animi quos velit et.'
+                  nullable: true
+                reserve_quantity:
+                  type: integer
+                  description: 'Must be at least 0.'
+                  example: 60
+                  nullable: true
+                unit:
+                  type: string
+                  description: 'Must not be greater than 20 characters.'
+                  example: dljnikhwaykcmyuw
+                  nullable: true
+                quantity_allocated:
+                  type: integer
+                  description: 'Must be at least 0.'
+                  example: 67
+                  nullable: true
+                quantity_remaining:
+                  type: integer
+                  description: 'Must be at least 0.'
+                  example: 61
+                  nullable: true
+                organization_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the organizations table.'
+                  example: architecto
+                  nullable: false
+              required:
+                - title
+                - organization_id
+      security: []
+    delete:
+      summary: 'Delete Spare Part'
+      operationId: deleteSparePart
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Spare Parts'
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'Spare part ID.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/suppliers:
+    get:
+      summary: 'List suppliers'
+      operationId: listSuppliers
+      description: 'Returns a list of suppliers. Use query parameters to eager load category details.'
+      parameters:
+        -
+          in: query
+          name: with_fuel
+          description: 'Whether to include fuel details.'
+          example: true
+          required: false
+          schema:
+            type: boolean
+            description: 'Whether to include fuel details.'
+            example: true
+            nullable: false
+        -
+          in: query
+          name: with_spare_parts
+          description: 'Whether to include spare parts details.'
+          example: true
+          required: false
+          schema:
+            type: boolean
+            description: 'Whether to include spare parts details.'
+            example: true
+            nullable: false
+        -
+          in: query
+          name: with_maintenance
+          description: 'Whether to include maintenance details.'
+          example: true
+          required: false
+          schema:
+            type: boolean
+            description: 'Whether to include maintenance details.'
+            example: true
+            nullable: false
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n \"data\": [\n   {\n     \"id\": 1,\n     \"supplier_name\": \"Acme Supplies\",\n     \"location\": \"Lagos\",\n     \"contact_person_name\": \"Jane Doe\",\n     \"contact_person_email\": \"jane@example.com\",\n     \"contact_person_phone\": \"+2348012345678\",\n     \"created_at\": \"2025-09-09T12:00:00.000000Z\",\n     \"updated_at\": \"2025-09-09T12:00:00.000000Z\",\n     \"fuelDetails\": [\n         //optional when with_fuel=1\n     ]\n   }\n ]\n}"
+      tags:
+        - Suppliers
+    post:
+      summary: 'Create a supplier'
+      operationId: createASupplier
+      description: 'Create a new supplier and optionally link it to fuel, spare part, or maintenance.'
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  supplier_name: 'Oando PLC'
+                  location: Lagos
+                  contact_person_name: 'John Doe'
+                  contact_person_email: john@oando.com
+                  contact_person_phone: '+2348012345678'
+                  fuelDetails:
+                    -
+                      id: 1
+                      fuel_id: 3
+                      fuel:
+                        id: 3
+                        title: Diesel
+                  sparePartDetails:
+                    -
+                      id: 1
+                      spare_part_id: 5
+                      sparePart:
+                        id: 5
+                        title: 'Brake Pad'
+                  maintenanceProviderDetails: []
+                  created_at: '2025-09-11T12:00:00.000000Z'
+                  updated_at: '2025-09-11T12:00:00.000000Z'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  supplier_name:
+                    type: string
+                    example: 'Oando PLC'
+                  location:
+                    type: string
+                    example: Lagos
+                  contact_person_name:
+                    type: string
+                    example: 'John Doe'
+                  contact_person_email:
+                    type: string
+                    example: john@oando.com
+                  contact_person_phone:
+                    type: string
+                    example: '+2348012345678'
+                  fuelDetails:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        fuel_id: 3
+                        fuel:
+                          id: 3
+                          title: Diesel
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        fuel_id:
+                          type: integer
+                          example: 3
+                        fuel:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 3
+                            title:
+                              type: string
+                              example: Diesel
+                  sparePartDetails:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        spare_part_id: 5
+                        sparePart:
+                          id: 5
+                          title: 'Brake Pad'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        spare_part_id:
+                          type: integer
+                          example: 5
+                        sparePart:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 5
+                            title:
+                              type: string
+                              example: 'Brake Pad'
+                  maintenanceProviderDetails:
+                    type: array
+                    example: []
+                  created_at:
+                    type: string
+                    example: '2025-09-11T12:00:00.000000Z'
+                  updated_at:
+                    type: string
+                    example: '2025-09-11T12:00:00.000000Z'
+      tags:
+        - Suppliers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                supplier_name:
+                  type: string
+                  description: "The supplier's display name."
+                  example: '"Oando PLC"'
+                  nullable: false
+                location:
+                  type: string
+                  description: 'Supplier location.'
+                  example: '"Lagos"'
+                  nullable: false
+                contact_person_name:
+                  type: string
+                  description: 'nullable Contact person name.'
+                  example: '"John Doe"'
+                  nullable: true
+                contact_person_email:
+                  type: string
+                  description: 'nullable Contact person email.'
+                  example: '"john@oando.com"'
+                  nullable: true
+                contact_person_phone:
+                  type: string
+                  description: 'nullable Contact person phone.'
+                  example: '"+2348012345678"'
+                  nullable: true
+                fuel_id:
+                  type: integer
+                  description: 'nullable Fuel ID to attach to this supplier.'
+                  example: 3
+                  nullable: true
+                spare_part_id:
+                  type: integer
+                  description: 'nullable Spare part ID to attach to this supplier.'
+                  example: 5
+                  nullable: true
+                maintenance_id:
+                  type: integer
+                  description: 'nullable Maintenance ID to attach to this supplier.'
+                  example: 2
+                  nullable: true
+              required:
+                - supplier_name
+                - location
+  '/api/v1/suppliers/{id}':
+    get:
+      summary: 'Show supplier'
+      operationId: showSupplier
+      description: 'Retrieve a supplier by id, with optional category details.'
+      parameters:
+        -
+          in: query
+          name: with_fuel
+          description: 'Whether to include fuel details.'
+          example: true
+          required: false
+          schema:
+            type: boolean
+            description: 'Whether to include fuel details.'
+            example: true
+            nullable: false
+        -
+          in: query
+          name: with_spare_parts
+          description: 'Whether to include spare parts details.'
+          example: true
+          required: false
+          schema:
+            type: boolean
+            description: 'Whether to include spare parts details.'
+            example: true
+            nullable: false
+        -
+          in: query
+          name: with_maintenance
+          description: 'Whether to include maintenance details.'
+          example: true
+          required: false
+          schema:
+            type: boolean
+            description: 'Whether to include maintenance details.'
+            example: true
+            nullable: false
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n \"id\": 1,\n \"supplier_name\": \"Acme Supplies\",\n \"location\": \"Ikeja\",\n \"contact_person_name\": \"Jane Doe\",\n \"contact_person_email\": \"jane@example.com\",\n \"contact_person_phone\": \"+2348012345678\",\n     \"fuelDetails\": [\n         //optional\n     ],\n \"sparePartDetails\": [\n         //optional\n     ],\n \"maintenanceProviderDetails\": [\n         //optional\n     ],\n \"created_at\": \"2025-09-09T12:00:00.000000Z\",\n \"updated_at\": \"2025-09-09T12:00:00.000000Z\"\n}"
+      tags:
+        - Suppliers
+    put:
+      summary: 'Update supplier'
+      operationId: updateSupplier
+      description: 'Update supplier information.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  supplier_name: 'Acme Supplies Updated'
+                  location: Ikeja
+                  contact_person_name: null
+                  contact_person_email: null
+                  contact_person_phone: null
+                  created_at: '2025-09-09T12:00:00.000000Z'
+                  updated_at: '2025-09-10T08:00:00.000000Z'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  supplier_name:
+                    type: string
+                    example: 'Acme Supplies Updated'
+                  location:
+                    type: string
+                    example: Ikeja
+                  contact_person_name:
+                    type: string
+                    example: null
+                  contact_person_email:
+                    type: string
+                    example: null
+                  contact_person_phone:
+                    type: string
+                    example: null
+                  created_at:
+                    type: string
+                    example: '2025-09-09T12:00:00.000000Z'
+                  updated_at:
+                    type: string
+                    example: '2025-09-10T08:00:00.000000Z'
+      tags:
+        - Suppliers
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                supplier_name:
+                  type: string
+                  description: 'sometimes Supplier name.'
+                  example: '"Acme Supplies Updated"'
+                  nullable: false
+                location:
+                  type: string
+                  description: 'sometimes Supplier location.'
+                  example: '"Ikeja"'
+                  nullable: false
+                contact_person_name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: g
+                  nullable: true
+                contact_person_email:
+                  type: string
+                  description: 'Must be a valid email address. Must not be greater than 255 characters.'
+                  example: rowan.gulgowski@example.com
+                  nullable: true
+                contact_person_phone:
+                  type: string
+                  description: 'Must not be greater than 50 characters.'
+                  example: d
+                  nullable: true
+    delete:
+      summary: 'Delete supplier'
+      operationId: deleteSupplier
+      description: 'Remove a supplier from the system.'
+      parameters: []
+      responses:
+        204:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {  }
+                properties: {  }
+      tags:
+        - Suppliers
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'Supplier id.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/vehicle-assignments/current:
+    get:
+      summary: 'List current active vehicle assignments'
+      operationId: listCurrentActiveVehicleAssignments
+      description: 'Returns all assignments that are currently active (released_at is null or in the future)'
+      parameters:
+        -
+          in: query
+          name: driver_id
+          description: 'nullable Filter by driver ID.'
+          example: 2
+          required: false
+          schema:
+            type: integer
+            description: 'nullable Filter by driver ID.'
+            example: 2
+            nullable: false
+        -
+          in: query
+          name: vehicle_id
+          description: 'nullable Filter by vehicle ID.'
+          example: 5
+          required: false
+          schema:
+            type: integer
+            description: 'nullable Filter by vehicle ID.'
+            example: 5
+            nullable: false
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      vehicle_id: 5
+                      driver_id: 2
+                      starting_odometer: '1200.50'
+                      assigned_at: '2025-09-11T08:00:00.000000Z'
+                      released_at: null
+                      vehicle:
+                        id: 5
+                        plate_number: ABC123
+                      driver:
+                        id: 2
+                        name: 'John Doe'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        vehicle_id: 5
+                        driver_id: 2
+                        starting_odometer: '1200.50'
+                        assigned_at: '2025-09-11T08:00:00.000000Z'
+                        released_at: null
+                        vehicle:
+                          id: 5
+                          plate_number: ABC123
+                        driver:
+                          id: 2
+                          name: 'John Doe'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        vehicle_id:
+                          type: integer
+                          example: 5
+                        driver_id:
+                          type: integer
+                          example: 2
+                        starting_odometer:
+                          type: string
+                          example: '1200.50'
+                        assigned_at:
+                          type: string
+                          example: '2025-09-11T08:00:00.000000Z'
+                        released_at:
+                          type: string
+                          example: null
+                        vehicle:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 5
+                            plate_number:
+                              type: string
+                              example: ABC123
+                        driver:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 2
+                            name:
+                              type: string
+                              example: 'John Doe'
+      tags:
+        - 'Vehicle Assignments'
+  '/api/v1/vehicle-assignments/driver/{driver_id}':
+    get:
+      summary: 'List all assignments for a specific driver'
+      operationId: listAllAssignmentsForASpecificDriver
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      vehicle_id: 5
+                      driver_id: 2
+                      starting_odometer: '1200.50'
+                      assigned_at: '2025-09-11T08:00:00.000000Z'
+                      released_at: null
+                      vehicle:
+                        id: 5
+                        plate_number: ABC123
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        vehicle_id: 5
+                        driver_id: 2
+                        starting_odometer: '1200.50'
+                        assigned_at: '2025-09-11T08:00:00.000000Z'
+                        released_at: null
+                        vehicle:
+                          id: 5
+                          plate_number: ABC123
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        vehicle_id:
+                          type: integer
+                          example: 5
+                        driver_id:
+                          type: integer
+                          example: 2
+                        starting_odometer:
+                          type: string
+                          example: '1200.50'
+                        assigned_at:
+                          type: string
+                          example: '2025-09-11T08:00:00.000000Z'
+                        released_at:
+                          type: string
+                          example: null
+                        vehicle:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 5
+                            plate_number:
+                              type: string
+                              example: ABC123
+      tags:
+        - 'Vehicle Assignments'
+    parameters:
+      -
+        in: path
+        name: driver_id
+        description: 'Driver ID.'
+        example: 2
+        required: true
+        schema:
+          type: integer
+  '/api/v1/vehicle-assignments/vehicle/{vehicle_id}':
+    get:
+      summary: 'List all assignments for a specific vehicle'
+      operationId: listAllAssignmentsForASpecificVehicle
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      vehicle_id: 5
+                      driver_id: 2
+                      starting_odometer: '1200.50'
+                      assigned_at: '2025-09-11T08:00:00.000000Z'
+                      released_at: null
+                      driver:
+                        id: 2
+                        name: 'John Doe'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        vehicle_id: 5
+                        driver_id: 2
+                        starting_odometer: '1200.50'
+                        assigned_at: '2025-09-11T08:00:00.000000Z'
+                        released_at: null
+                        driver:
+                          id: 2
+                          name: 'John Doe'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        vehicle_id:
+                          type: integer
+                          example: 5
+                        driver_id:
+                          type: integer
+                          example: 2
+                        starting_odometer:
+                          type: string
+                          example: '1200.50'
+                        assigned_at:
+                          type: string
+                          example: '2025-09-11T08:00:00.000000Z'
+                        released_at:
+                          type: string
+                          example: null
+                        driver:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 2
+                            name:
+                              type: string
+                              example: 'John Doe'
+      tags:
+        - 'Vehicle Assignments'
+    parameters:
+      -
+        in: path
+        name: vehicle_id
+        description: 'Vehicle ID.'
+        example: 5
+        required: true
+        schema:
+          type: integer
+  '/api/v1/vehicle-assignments/{assignment_id}/release':
+    post:
+      summary: 'Release a vehicle assignment'
+      operationId: releaseAVehicleAssignment
+      description: 'Marks the vehicle as available again after its assignment ends.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  vehicle_id: 10
+                  driver_id: 5
+                  starting_odometer: 12000
+                  assigned_by_id: 2
+                  assigned_to_id: 3
+                  assigned_at: '2025-09-29 09:00:00'
+                  released_at: '2025-09-30 14:30:00'
+                  vehicle:
+                    id: 10
+                    title: 'Toyota Hilux'
+                    status: available
+                  driver:
+                    id: 5
+                    name: 'John Doe'
+                  assigned_by:
+                    id: 2
+                    name: 'Jane Smith'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  vehicle_id:
+                    type: integer
+                    example: 10
+                  driver_id:
+                    type: integer
+                    example: 5
+                  starting_odometer:
+                    type: integer
+                    example: 12000
+                  assigned_by_id:
+                    type: integer
+                    example: 2
+                  assigned_to_id:
+                    type: integer
+                    example: 3
+                  assigned_at:
+                    type: string
+                    example: '2025-09-29 09:00:00'
+                  released_at:
+                    type: string
+                    example: '2025-09-30 14:30:00'
+                  vehicle:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 10
+                      title:
+                        type: string
+                        example: 'Toyota Hilux'
+                      status:
+                        type: string
+                        example: available
+                  driver:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 5
+                      name:
+                        type: string
+                        example: 'John Doe'
+                  assigned_by:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 2
+                      name:
+                        type: string
+                        example: 'Jane Smith'
+        409:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This assignment has already been released.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This assignment has already been released.'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    released_at:
+                      - 'The released at field is required.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      released_at:
+                        type: array
+                        example:
+                          - 'The released at field is required.'
+                        items:
+                          type: string
+      tags:
+        - 'Vehicle Assignments'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                released_at:
+                  type: date
+                  description: "The date and time the vehicle was released.\nMust be on or after the assigned_at date."
+                  example: '2025-09-30 14:30:00'
+                  nullable: false
+              required:
+                - released_at
+    parameters:
+      -
+        in: path
+        name: assignment_id
+        description: 'The ID of the assignment.'
+        example: 16
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: assignment
+        description: 'The ID of the vehicle assignment.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/vehicle-assignments:
+    get:
+      summary: 'List vehicle assignments'
+      operationId: listVehicleAssignments
+      description: 'Returns all vehicle assignments. Supports optional filtering by driver or vehicle.'
+      parameters:
+        -
+          in: query
+          name: driver_id
+          description: 'Filter by driver ID.'
+          example: 2
+          required: false
+          schema:
+            type: integer
+            description: 'Filter by driver ID.'
+            example: 2
+            nullable: false
+        -
+          in: query
+          name: vehicle_id
+          description: 'Filter by vehicle ID.'
+          example: 5
+          required: false
+          schema:
+            type: integer
+            description: 'Filter by vehicle ID.'
+            example: 5
+            nullable: false
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      vehicle_id: 5
+                      driver_id: 2
+                      starting_odometer: '1200.50'
+                      assigned_by_id: 1
+                      assigned_at: '2025-09-11T08:00:00.000000Z'
+                      released_at: null
+                      vehicle:
+                        id: 5
+                        plate_number: ABC123
+                      driver:
+                        id: 2
+                        name: 'John Doe'
+                      assignedBy:
+                        id: 1
+                        name: 'Admin Staff'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        vehicle_id: 5
+                        driver_id: 2
+                        starting_odometer: '1200.50'
+                        assigned_by_id: 1
+                        assigned_at: '2025-09-11T08:00:00.000000Z'
+                        released_at: null
+                        vehicle:
+                          id: 5
+                          plate_number: ABC123
+                        driver:
+                          id: 2
+                          name: 'John Doe'
+                        assignedBy:
+                          id: 1
+                          name: 'Admin Staff'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        vehicle_id:
+                          type: integer
+                          example: 5
+                        driver_id:
+                          type: integer
+                          example: 2
+                        starting_odometer:
+                          type: string
+                          example: '1200.50'
+                        assigned_by_id:
+                          type: integer
+                          example: 1
+                        assigned_at:
+                          type: string
+                          example: '2025-09-11T08:00:00.000000Z'
+                        released_at:
+                          type: string
+                          example: null
+                        vehicle:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 5
+                            plate_number:
+                              type: string
+                              example: ABC123
+                        driver:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 2
+                            name:
+                              type: string
+                              example: 'John Doe'
+                        assignedBy:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: 'Admin Staff'
+      tags:
+        - 'Vehicle Assignments'
+    post:
+      summary: 'Create a vehicle assignment'
+      operationId: createAVehicleAssignment
+      description: 'Assign a vehicle to a driver.'
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"id\": 1,\n  \"vehicle_id\": 5,\n  \"driver_id\": 2,\n  \"starting_odometer\": \"1200.50\",\n  \"assigned_by_id\": 1,\n  \"assigned_to_id\": 2,\n  \"assigned_at\": \"2025-09-11T08:00:00.000000Z\",\n  \"released_at\": null,\n  \"vehicle\": { \"id\": 5, \"plate_number\": \"ABC123\" },\n  \"driver\": { \"id\": 2, \"name\": \"John Doe\" },\n  \"assignedBy\": { \"id\": 1, \"name\": \"Admin Staff\" }\n  \"assignedTo\": { \"id\": 1, \"name\": \"Company Staff\" }\n}"
+      tags:
+        - 'Vehicle Assignments'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                vehicle_id:
+                  type: integer
+                  description: 'Vehicle ID.'
+                  example: 5
+                  nullable: false
+                driver_id:
+                  type: integer
+                  description: 'Driver ID.'
+                  example: 2
+                  nullable: false
+                starting_odometer:
+                  type: number
+                  description: 'nullable Starting odometer.'
+                  example: 1200.5
+                  nullable: true
+                assigned_by_id:
+                  type: integer
+                  description: 'nullable Staff ID who assigned the vehicle.'
+                  example: 1
+                  nullable: true
+                assigned_to_id:
+                  type: integer
+                  description: 'nullable Staff ID who assigned the vehicle.'
+                  example: 1
+                  nullable: true
+                assigned_at:
+                  type: datetime
+                  description: 'nullable Assignment start time.'
+                  example: '"2025-09-11 08:00:00"'
+                  nullable: true
+                released_at:
+                  type: datetime
+                  description: 'nullable Assignment end time.'
+                  example: '"2025-09-20 17:00:00"'
+                  nullable: true
+              required:
+                - vehicle_id
+                - driver_id
+  '/api/v1/vehicle-assignments/{id}':
+    get:
+      summary: 'Show vehicle assignment'
+      operationId: showVehicleAssignment
+      description: 'Get details of a single assignment.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  vehicle_id: 5
+                  driver_id: 2
+                  starting_odometer: '1200.50'
+                  assigned_by_id: 1
+                  assigned_at: '2025-09-11T08:00:00.000000Z'
+                  released_at: null
+                  vehicle:
+                    id: 5
+                    plate_number: ABC123
+                  driver:
+                    id: 2
+                    name: 'John Doe'
+                  assignedBy:
+                    id: 1
+                    name: 'Admin Staff'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  vehicle_id:
+                    type: integer
+                    example: 5
+                  driver_id:
+                    type: integer
+                    example: 2
+                  starting_odometer:
+                    type: string
+                    example: '1200.50'
+                  assigned_by_id:
+                    type: integer
+                    example: 1
+                  assigned_at:
+                    type: string
+                    example: '2025-09-11T08:00:00.000000Z'
+                  released_at:
+                    type: string
+                    example: null
+                  vehicle:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 5
+                      plate_number:
+                        type: string
+                        example: ABC123
+                  driver:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 2
+                      name:
+                        type: string
+                        example: 'John Doe'
+                  assignedBy:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Admin Staff'
+      tags:
+        - 'Vehicle Assignments'
+    put:
+      summary: 'Update vehicle assignment'
+      operationId: updateVehicleAssignment
+      description: 'Update the assignment details, e.g., released_at.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  vehicle_id: 5
+                  driver_id: 2
+                  starting_odometer: '1200.50'
+                  assigned_by_id: 1
+                  assigned_at: '2025-09-11T08:00:00.000000Z'
+                  released_at: '2025-09-20T17:00:00.000000Z'
+                  vehicle:
+                    id: 5
+                    plate_number: ABC123
+                  driver:
+                    id: 2
+                    name: 'John Doe'
+                  assignedBy:
+                    id: 1
+                    name: 'Admin Staff'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  vehicle_id:
+                    type: integer
+                    example: 5
+                  driver_id:
+                    type: integer
+                    example: 2
+                  starting_odometer:
+                    type: string
+                    example: '1200.50'
+                  assigned_by_id:
+                    type: integer
+                    example: 1
+                  assigned_at:
+                    type: string
+                    example: '2025-09-11T08:00:00.000000Z'
+                  released_at:
+                    type: string
+                    example: '2025-09-20T17:00:00.000000Z'
+                  vehicle:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 5
+                      plate_number:
+                        type: string
+                        example: ABC123
+                  driver:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 2
+                      name:
+                        type: string
+                        example: 'John Doe'
+                  assignedBy:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Admin Staff'
+      tags:
+        - 'Vehicle Assignments'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                starting_odometer:
+                  type: number
+                  description: 'nullable Starting odometer.'
+                  example: 1200.5
+                  nullable: true
+                assigned_by_id:
+                  type: integer
+                  description: 'nullable Staff ID who assigned the vehicle.'
+                  example: 1
+                  nullable: true
+                assigned_at:
+                  type: datetime
+                  description: 'nullable Assignment start time.'
+                  example: '"2025-09-11 08:00:00"'
+                  nullable: true
+                released_at:
+                  type: datetime
+                  description: 'nullable Assignment end time.'
+                  example: '"2025-09-20 17:00:00"'
+                  nullable: true
+    delete:
+      summary: 'Delete vehicle assignment'
+      operationId: deleteVehicleAssignment
+      description: 'Remove a vehicle assignment record.'
+      parameters: []
+      responses:
+        204:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {  }
+                properties: {  }
+      tags:
+        - 'Vehicle Assignments'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'Assignment ID.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/vehicles:
+    get:
+      summary: 'Get all vehicles'
+      operationId: getAllVehicles
+      description: 'Fetch a list of all vehicles with their organization, driver, and assigned staff.'
+      parameters: []
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  data:
+                    -
+                      id: 1
+                      name: 'Toyota Hiace'
+                      type: Van
+                      plate_number: ABC123
+                      chasis_number: CHS123456789
+                      manufacturer: Toyota
+                      condition: Used
+                      status: Active
+                      fuel_capacity: '70.00'
+                      organization:
+                        id: 1
+                        name: 'Org Ltd'
+                      driver:
+                        id: 2
+                        name: 'John Doe'
+                      assigned_user:
+                        id: 3
+                        name: 'Jane Doe'
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'Toyota Hiace'
+                        type: Van
+                        plate_number: ABC123
+                        chasis_number: CHS123456789
+                        manufacturer: Toyota
+                        condition: Used
+                        status: Active
+                        fuel_capacity: '70.00'
+                        organization:
+                          id: 1
+                          name: 'Org Ltd'
+                        driver:
+                          id: 2
+                          name: 'John Doe'
+                        assigned_user:
+                          id: 3
+                          name: 'Jane Doe'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'Toyota Hiace'
+                        type:
+                          type: string
+                          example: Van
+                        plate_number:
+                          type: string
+                          example: ABC123
+                        chasis_number:
+                          type: string
+                          example: CHS123456789
+                        manufacturer:
+                          type: string
+                          example: Toyota
+                        condition:
+                          type: string
+                          example: Used
+                        status:
+                          type: string
+                          example: Active
+                        fuel_capacity:
+                          type: string
+                          example: '70.00'
+                        organization:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: 'Org Ltd'
+                        driver:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 2
+                            name:
+                              type: string
+                              example: 'John Doe'
+                        assigned_user:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 3
+                            name:
+                              type: string
+                              example: 'Jane Doe'
+      tags:
+        - Vehicles
+    post:
+      summary: 'Create a new vehicle'
+      operationId: createANewVehicle
+      description: 'Store a new vehicle in the system.'
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  asset_number: ASSET-2025-001
+                  vehicle_security_number: CHS123456789
+                  date_purchased: '2023-06-15'
+                  manufactured_year: 2020
+                  fuel_type: diesel
+                  created_at: '2025-09-20T10:00:00.000000Z'
+                  updated_at: '2025-09-20T10:00:00.000000Z'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  asset_number:
+                    type: string
+                    example: ASSET-2025-001
+                  vehicle_security_number:
+                    type: string
+                    example: CHS123456789
+                  date_purchased:
+                    type: string
+                    example: '2023-06-15'
+                  manufactured_year:
+                    type: integer
+                    example: 2020
+                  fuel_type:
+                    type: string
+                    example: diesel
+                  created_at:
+                    type: string
+                    example: '2025-09-20T10:00:00.000000Z'
+                  updated_at:
+                    type: string
+                    example: '2025-09-20T10:00:00.000000Z'
+      tags:
+        - Vehicles
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The vehicle name.'
+                  example: 'Toyota Hiace'
+                  nullable: false
+                type:
+                  type: string
+                  description: 'The type of vehicle (Car, Van, Truck, Bus).'
+                  example: Van
+                  nullable: false
+                plate_number:
+                  type: string
+                  description: 'Unique plate number.'
+                  example: ABC123
+                  nullable: false
+                chasis_number:
+                  type: string
+                  description: 'Unique chassis number.'
+                  example: CHS123456789
+                  nullable: false
+                manufacturer:
+                  type: string
+                  description: 'Vehicle manufacturer.'
+                  example: Toyota
+                  nullable: false
+                condition:
+                  type: string
+                  description: 'Vehicle condition (In Good Condition, Flagged for Repair, Damaged).'
+                  example: Used
+                  nullable: false
+                status:
+                  type: string
+                  description: 'Current status (Assigned Unassigned, Under Maintenance, Parked).'
+                  example: Unassigned
+                  nullable: true
+                fuel_capacity:
+                  type: number
+                  description: 'Fuel tank capacity.'
+                  example: 70.5
+                  nullable: true
+                organization_id:
+                  type: integer
+                  description: 'The owning organization ID.'
+                  example: 1
+                  nullable: false
+                driver_id:
+                  type: integer
+                  description: 'The assigned driver ID (nullable).'
+                  example: 2
+                  nullable: true
+                user_assigned_id:
+                  type: integer
+                  description: 'The assigned staff ID (nullable).'
+                  example: 3
+                  nullable: true
+                asset_number:
+                  type: string
+                  description: 'Unique internal asset number.'
+                  example: ASSET-2025-001
+                  nullable: false
+                vehicle_security_number:
+                  type: string
+                  description: 'Unique vehicle security identifier (chassis/engine).'
+                  example: CHS123456789
+                  nullable: false
+                date_purchased:
+                  type: date
+                  description: 'The purchase date of the vehicle.'
+                  example: '2023-06-15'
+                  nullable: true
+                manufactured_year:
+                  type: integer
+                  description: 'The year the vehicle was manufactured.'
+                  example: 2020
+                  nullable: false
+                fuel_type:
+                  type: string
+                  description: 'The fuel type of the vehicle. Must be one of: petrol, diesel, electric, hybrid.'
+                  example: diesel
+                  nullable: false
+              required:
+                - name
+                - type
+                - plate_number
+                - chasis_number
+                - manufacturer
+                - condition
+                - status
+                - organization_id
+                - asset_number
+                - vehicle_security_number
+  '/api/v1/vehicles/{id}':
+    get:
+      summary: 'Get a single vehicle'
+      operationId: getASingleVehicle
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: Found
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  data:
+                    id: 1
+                    name: 'Toyota Hiace'
+                    type: Van
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Toyota Hiace'
+                      type:
+                        type: string
+                        example: Van
+        404:
+          description: 'Not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [Vehicle] 999'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [Vehicle] 999'
+      tags:
+        - Vehicles
+    put:
+      summary: 'Update a vehicle'
+      operationId: updateAVehicle
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  message: 'Vehicle updated successfully.'
+                  data:
+                    id: 1
+                    name: 'Toyota Corolla'
+                    status: Inactive
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Vehicle updated successfully.'
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Toyota Corolla'
+                      status:
+                        type: string
+                        example: Inactive
+      tags:
+        - Vehicles
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The vehicle name.'
+                  example: 'Toyota Corolla'
+                  nullable: false
+                type:
+                  type: string
+                  description: 'The type of vehicle (Car, Van, Truck, Bus).'
+                  example: Car
+                  nullable: false
+                plate_number:
+                  type: string
+                  description: ''
+                  example: null
+                  nullable: false
+                chasis_number:
+                  type: string
+                  description: ''
+                  example: null
+                  nullable: false
+                manufacturer:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: false
+                condition:
+                  type: string
+                  description: ''
+                  example: 'In Good Condition'
+                  nullable: false
+                  enum:
+                    - 'In Good Condition'
+                    - 'Flagged for Repair'
+                    - Damaged
+                status:
+                  type: string
+                  description: 'The current status.'
+                  example: Inactive
+                  nullable: false
+                fuel_capacity:
+                  type: number
+                  description: 'Must be at least 0.'
+                  example: 39
+                  nullable: true
+                organization_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the organizations table.'
+                  example: null
+                  nullable: false
+                driver_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the drivers table.'
+                  example: null
+                  nullable: true
+                user_assigned_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the organization_staffs table.'
+                  example: null
+                  nullable: true
+                asset_number:
+                  type: string
+                  description: ''
+                  example: null
+                  nullable: false
+                vehicle_security_number:
+                  type: string
+                  description: ''
+                  example: null
+                  nullable: false
+                date_purchased:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2026-10-05T19:57:07'
+                  nullable: true
+                manufactured_year:
+                  type: string
+                  description: ''
+                  example: null
+                  nullable: false
+                fuel_type:
+                  type: array
+                  description: 'Must not be greater than 255 characters.'
+                  example:
+                    - g
+                  items:
+                    type: string
+    delete:
+      summary: 'Delete a vehicle'
+      operationId: deleteAVehicle
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  message: 'Vehicle deleted successfully.'
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Vehicle deleted successfully.'
+      tags:
+        - Vehicles
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the vehicle.'
+        example: 1
+        required: true
+        schema:
+          type: integer

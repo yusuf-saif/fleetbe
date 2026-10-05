@@ -1,0 +1,520 @@
+name: Suppliers
+description: |-
+
+  APIs for managing suppliers
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/v1/suppliers
+    metadata:
+      groupName: Suppliers
+      groupDescription: |-
+
+        APIs for managing suppliers
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List suppliers'
+      description: 'Returns a list of suppliers. Use query parameters to eager load category details.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      with_fuel:
+        name: with_fuel
+        description: 'Whether to include fuel details.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      with_spare_parts:
+        name: with_spare_parts
+        description: 'Whether to include spare parts details.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      with_maintenance:
+        name: with_maintenance
+        description: 'Whether to include maintenance details.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      with_fuel: true
+      with_spare_parts: true
+      with_maintenance: true
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+           "data": [
+             {
+               "id": 1,
+               "supplier_name": "Acme Supplies",
+               "location": "Lagos",
+               "contact_person_name": "Jane Doe",
+               "contact_person_email": "jane@example.com",
+               "contact_person_phone": "+2348012345678",
+               "created_at": "2025-09-09T12:00:00.000000Z",
+               "updated_at": "2025-09-09T12:00:00.000000Z",
+               "fuelDetails": [
+                   //optional when with_fuel=1
+               ]
+             }
+           ]
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/suppliers
+    metadata:
+      groupName: Suppliers
+      groupDescription: |-
+
+        APIs for managing suppliers
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create a supplier'
+      description: 'Create a new supplier and optionally link it to fuel, spare part, or maintenance.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      supplier_name:
+        name: supplier_name
+        description: "The supplier's display name."
+        required: true
+        example: '"Oando PLC"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      location:
+        name: location
+        description: 'Supplier location.'
+        required: true
+        example: '"Lagos"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      contact_person_name:
+        name: contact_person_name
+        description: 'nullable Contact person name.'
+        required: false
+        example: '"John Doe"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      contact_person_email:
+        name: contact_person_email
+        description: 'nullable Contact person email.'
+        required: false
+        example: '"john@oando.com"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      contact_person_phone:
+        name: contact_person_phone
+        description: 'nullable Contact person phone.'
+        required: false
+        example: '"+2348012345678"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      fuel_id:
+        name: fuel_id
+        description: 'nullable Fuel ID to attach to this supplier.'
+        required: false
+        example: 3
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      spare_part_id:
+        name: spare_part_id
+        description: 'nullable Spare part ID to attach to this supplier.'
+        required: false
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      maintenance_id:
+        name: maintenance_id
+        description: 'nullable Maintenance ID to attach to this supplier.'
+        required: false
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+    cleanBodyParameters:
+      supplier_name: '"Oando PLC"'
+      location: '"Lagos"'
+      contact_person_name: '"John Doe"'
+      contact_person_email: '"john@oando.com"'
+      contact_person_phone: '"+2348012345678"'
+      fuel_id: 3
+      spare_part_id: 5
+      maintenance_id: 2
+    fileParameters: []
+    responses:
+      -
+        status: 201
+        content: |-
+          {
+            "id": 1,
+            "supplier_name": "Oando PLC",
+            "location": "Lagos",
+            "contact_person_name": "John Doe",
+            "contact_person_email": "john@oando.com",
+            "contact_person_phone": "+2348012345678",
+            "fuelDetails": [
+              {
+                "id": 1,
+                "fuel_id": 3,
+                "fuel": {
+                  "id": 3,
+                  "title": "Diesel"
+                }
+              }
+            ],
+            "sparePartDetails": [
+              {
+                "id": 1,
+                "spare_part_id": 5,
+                "sparePart": {
+                  "id": 5,
+                  "title": "Brake Pad"
+                }
+              }
+            ],
+            "maintenanceProviderDetails": [],
+            "created_at": "2025-09-11T12:00:00.000000Z",
+            "updated_at": "2025-09-11T12:00:00.000000Z"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/v1/suppliers/{id}'
+    metadata:
+      groupName: Suppliers
+      groupDescription: |-
+
+        APIs for managing suppliers
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Show supplier'
+      description: 'Retrieve a supplier by id, with optional category details.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'Supplier id.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters:
+      with_fuel:
+        name: with_fuel
+        description: 'Whether to include fuel details.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      with_spare_parts:
+        name: with_spare_parts
+        description: 'Whether to include spare parts details.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      with_maintenance:
+        name: with_maintenance
+        description: 'Whether to include maintenance details.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      with_fuel: true
+      with_spare_parts: true
+      with_maintenance: true
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+           "id": 1,
+           "supplier_name": "Acme Supplies",
+           "location": "Ikeja",
+           "contact_person_name": "Jane Doe",
+           "contact_person_email": "jane@example.com",
+           "contact_person_phone": "+2348012345678",
+               "fuelDetails": [
+                   //optional
+               ],
+           "sparePartDetails": [
+                   //optional
+               ],
+           "maintenanceProviderDetails": [
+                   //optional
+               ],
+           "created_at": "2025-09-09T12:00:00.000000Z",
+           "updated_at": "2025-09-09T12:00:00.000000Z"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PUT
+      - PATCH
+    uri: 'api/v1/suppliers/{id}'
+    metadata:
+      groupName: Suppliers
+      groupDescription: |-
+
+        APIs for managing suppliers
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update supplier'
+      description: 'Update supplier information.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'Supplier id.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      supplier_name:
+        name: supplier_name
+        description: 'sometimes Supplier name.'
+        required: false
+        example: '"Acme Supplies Updated"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      location:
+        name: location
+        description: 'sometimes Supplier location.'
+        required: false
+        example: '"Ikeja"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      contact_person_name:
+        name: contact_person_name
+        description: 'Must not be greater than 255 characters.'
+        required: false
+        example: g
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      contact_person_email:
+        name: contact_person_email
+        description: 'Must be a valid email address. Must not be greater than 255 characters.'
+        required: false
+        example: rowan.gulgowski@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      contact_person_phone:
+        name: contact_person_phone
+        description: 'Must not be greater than 50 characters.'
+        required: false
+        example: d
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+    cleanBodyParameters:
+      supplier_name: '"Acme Supplies Updated"'
+      location: '"Ikeja"'
+      contact_person_name: g
+      contact_person_email: rowan.gulgowski@example.com
+      contact_person_phone: d
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+           "id": 1,
+           "supplier_name": "Acme Supplies Updated",
+           "location": "Ikeja",
+           "contact_person_name": null,
+           "contact_person_email": null,
+           "contact_person_phone": null,
+           "created_at": "2025-09-09T12:00:00.000000Z",
+           "updated_at": "2025-09-10T08:00:00.000000Z"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/suppliers/{id}'
+    metadata:
+      groupName: Suppliers
+      groupDescription: |-
+
+        APIs for managing suppliers
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Delete supplier'
+      description: 'Remove a supplier from the system.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'Supplier id.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 204
+        content: '{}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
