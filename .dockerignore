@@ -1,0 +1,42 @@
+# Build artefacts and local secrets must never enter the image context.
+.git
+.gitignore
+.github
+.idea
+.vscode
+.zed
+
+# Dependencies are installed inside the image, never copied from the host.
+node_modules
+vendor
+
+# Secrets
+.env
+.env.backup
+.env.production
+.env.production.backup
+.env.testing
+
+# Build output and caches (rebuilt inside the image)
+public/build
+public/hot
+public/storage
+storage/pail
+storage/*.key
+bootstrap/cache/*.php
+.phpunit.cache
+.phpunit.result.cache
+npm-debug.log
+yarn-error.log
+
+# Tests are not shipped because composer install runs with --no-dev
+tests
+phpunit.xml
+/database/database.sqlite
+
+# Local Docker plumbing
+Dockerfile
+.dockerignore
+compose.yaml
+README.Docker.md
+README.md

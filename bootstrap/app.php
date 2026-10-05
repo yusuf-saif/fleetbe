@@ -18,6 +18,20 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([]);
+
+        // Railway terminates TLS and forwards requests, so without this every
+        // request appears to come from the proxy. That makes throttle:api
+        // rate limit all clients as one shared bucket.
+        $middleware->trustProxies(
+            at: '*',
+            headers:
+                Request::HEADER_X_FORWARDED_FOR |
+                Request::HEADER_X_FORWARDED_HOST |
+                Request::HEADER_X_FORWARDED_PORT |
+                Request::HEADER_X_FORWARDED_PROTO |
+                Request::HEADER_X_FORWARDED_AWS_ELB,
+        );
+
         $middleware->group("api", [
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             'throttle:api',

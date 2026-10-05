@@ -5,9 +5,23 @@ services:
       dockerfile: Dockerfile
     container_name: laravel_app
     restart: unless-stopped
-    volumes:
-      - .:/var/www
     env_file:
       - .env
+    environment:
+      # Caddy in the image listens on $PORT.
+      PORT: 8080
     ports:
-      - "9000:9000" # expose PHP-FPM on host
+      - "8080:8080"
+    volumes:
+      - .:/var/www
+      # Keep the image's installed dependencies and built assets instead of
+      # letting the bind mount above shadow them with the host's (possibly
+      # missing) copies. Docker seeds these from the image on first run.
+      - vendor:/var/www/vendor
+      - build:/var/www/public/build
+      - storage:/var/www/storage
+
+volumes:
+  vendor:
+  build:
+  storage:
