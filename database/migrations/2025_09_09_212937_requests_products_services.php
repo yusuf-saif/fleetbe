@@ -54,12 +54,6 @@ return new class extends Migration
             // Indexes
             $table->index(["requestable_type", "requestable_id"]);
         });
-
-        Schema::table("requests", function (Blueprint $table) {
-            $table->dropColumn("requestable_type");
-            $table->dropColumn("requestable_id");
-            $table->addColumn("morphs", 'requestable');
-        });
     }
 
     /**
