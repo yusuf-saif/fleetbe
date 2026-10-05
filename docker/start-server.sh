@@ -15,6 +15,10 @@ mkdir -p \
     bootstrap/cache
 
 chown -R www-data:www-data storage bootstrap/cache 2>/dev/null || true
+chmod -R 777 storage bootstrap/cache 2>/dev/null || true
+
+# Automatically run database migrations on boot
+php artisan migrate --force --no-interaction || true
 
 php-fpm --daemonize
 
