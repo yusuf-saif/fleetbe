@@ -6,6 +6,9 @@
 # without Caddy being started as well.
 set -e
 
+# Change into the application root directory
+cd /var/www
+
 # Laravel writes logs, compiled views and cached config at runtime.
 mkdir -p \
     storage/framework/cache/data \
