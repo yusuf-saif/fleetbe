@@ -496,3 +496,4 @@ Rejects a request and writes the rejection reason into `description`.
 }
 ```
 * **Response (200 OK):** Returns request with `status: "rejected"`.
+

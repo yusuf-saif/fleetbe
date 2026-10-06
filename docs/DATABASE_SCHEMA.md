@@ -486,3 +486,4 @@ The schema contains 17 migration files executed chronologically:
 14. `2025_10_01_100111_modify_request_table.php` (added `with_sparepart`, `spare_part_id`, `other_sparepart`)
 15. `2025_10_12_114702_add_array_to_vehicles_table.php` (converted vehicle `fuel_type` from enum to `json`)
 16. `3025_08_15_100204_create_supplier_table.php` (created `suppliers` and 3 supplier detail pivot tables)
+

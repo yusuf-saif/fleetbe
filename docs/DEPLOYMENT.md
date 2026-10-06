@@ -168,3 +168,4 @@ php artisan cache:clear
 php artisan route:clear
 ```
 *(Alternatively, a web fallback endpoint is available at `GET /clear-cache`)*.
+

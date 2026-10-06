@@ -204,3 +204,4 @@ flowchart TD
 ```
 
 All responses conform to consistent JSON payloads with explicit HTTP status codes (`200`, `201`, `401`, `403`, `404`, `409`, `422`, `500`).
+

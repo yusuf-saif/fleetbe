@@ -165,3 +165,4 @@ public function content(): Content
 - [ ] **Step 5:** Rename `app/Models/vehicle.php` to `app/Models/Vehicle.php`.
 - [ ] **Step 6:** Rename migration `3025_08_15_100204_create_supplier_table.php` to `2025_09_10_100204_create_supplier_table.php`.
 - [ ] **Step 7:** Implement tenant scoping middleware or global scopes across all domain queries.
+
