@@ -1,61 +1,125 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# FleetBe — Fleet & Asset Management Backend API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+[![Laravel 12](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel)](https://laravel.com)
+[![PHP 8.2+](https://img.shields.io/badge/PHP-8.2%2B-777BB4?style=for-the-badge&logo=php)](https://php.net)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14%2B-336791?style=for-the-badge&logo=postgresql)](https://postgresql.org)
+[![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker)](https://docker.com)
+[![Railway](https://img.shields.io/badge/Railway-Deployable-0B0D0E?style=for-the-badge&logo=railway)](https://railway.app)
 
-## About Laravel
+**FleetBe** is a RESTful API backend designed for enterprise vehicle fleet operations, driver management, inventory logistics (fuels & spare parts), maintenance scheduling, and resource request workflows.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📚 Table of Contents
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- [Key Features](#-key-features)
+- [Interactive API Documentation](#-interactive-api-documentation)
+- [Quick Start](#-quick-start)
+- [API Overview](#-api-overview)
+- [Documentation Index](#-documentation-index)
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🚀 Key Features
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+* **Multi-Tenant Organizations:** Hierarchical modeling organizing all vehicles, drivers, inventory, and staff under individual organizations (`/api/v1/organizations`).
+* **Dual-Guard Authentication:** Secure access control powered by Laravel Sanctum with separate authentication flows for corporate staff (`users`) and vehicle operators (`drivers`).
+* **Vehicle & Asset Lifecycle:** Full tracking of vehicle specifications, manufacturer info, condition, operational status, license plates, asset barcodes, and security tags.
+* **Vehicle Assignment Workflow:** Driver checkout/check-in tracking with initial and final odometer readings, assigned staff logs, and release controls.
+* **Resource & Inventory Logistics:**
+  * Multi-fuel management (Petrol, Diesel, Gas) with depot reserve tracking.
+  * Spare parts inventory tracking with unit metrics and safety stock thresholds.
+  * Polymorphic multi-depot storage modeling (`storages`).
+* **Scheduled & Ad-Hoc Maintenance:** Preventative and corrective maintenance procedure logging.
+* **Polymorphic Request & Approval Pipeline:** Unified request submission and approval engine for fuel dispensing, spare part replacements, and repair work orders.
+* **Vendor & Supplier Directory:** Vendor directory mapping fuel depots, parts distributors, and maintenance centers.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 📖 Interactive API Documentation
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+FleetBe provides three interactive documentation interfaces:
 
-### Premium Partners
+| Interface | URL Path | Description |
+|---|---|---|
+| **Swagger UI** | `/swagger` *(or `/docs/swagger`, `/api/documentation`)* | Classic Swagger UI by SmartBear with full "Try it out" console and Bearer token authorization. |
+| **Scalar UI** | `/scalar` | Modern, clean interactive API documentation powered by `@scalar/api-reference`. |
+| **Scribe UI** | `/docs` | Comprehensive multi-language API documentation with request examples. |
+| **Raw OpenAPI Spec** | `/docs.openapi` | Standard OpenAPI 3.0 specification in YAML format. |
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## ⚡ Quick Start
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Option A: Docker Compose (Recommended)
 
-## Code of Conduct
+1. Initialize environment file:
+   ```bash
+   cp .env.example .env
+   ```
+2. Build and launch containers:
+   ```bash
+   docker compose up --build
+   ```
+3. Access API & Documentation:
+   * **Swagger UI:** `http://localhost:8080/swagger`
+   * **API Base:** `http://localhost:8080/api/v1`
+   * **Health Status:** `http://localhost:8080/api/v1/status`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Option B: Local Machine Setup
 
-## Security Vulnerabilities
+1. Install Composer dependencies:
+   ```bash
+   composer install
+   ```
+2. Generate application key:
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+3. Run migrations and seed default organization:
+   ```bash
+   php artisan migrate
+   php artisan db:seed --class=DatabaseSeeder
+   ```
+4. Start local development server:
+   ```bash
+   php artisan serve --port=8080
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 📡 API Overview
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+All API endpoints are versioned under `/api/v1`:
+
+| Area | Route Group | Description |
+|---|---|---|
+| **Health** | `GET /v1/status` | System health check |
+| **Organizations** | `/v1/organizations` | List, create, and view tenant organizations |
+| **Auth** | `/v1/auth/*` | User registration, login, logout, password resets |
+| **Drivers** | `/v1/driver/*` | Driver registration, login, password changes, profiles |
+| **Vehicles** | `/v1/vehicles` | Vehicle CRUD operations and filtering |
+| **Assignments** | `/v1/vehicle-assignments` | Check out, track, and release vehicle assignments |
+| **Fuels** | `/v1/fuel` | Fuel depot reserves and allocation tracking |
+| **Spare Parts** | `/v1/sparepart` | Spare parts catalog and warehouse inventory |
+| **Maintenance** | `/v1/maintenance` | Maintenance service schedules and types |
+| **Suppliers** | `/v1/suppliers` | Vendor directory with linked services |
+| **Requests** | `/v1/requests` | Resource request submission, approval, and rejection |
+
+---
+
+## 📁 Documentation Index
+
+Detailed specifications are available in the [`docs/`](docs/) directory:
+* [Architecture Guide](docs/ARCHITECTURE.md)
+* [Database Schema Specification](docs/DATABASE_SCHEMA.md)
+* [API Reference Guide](docs/API_REFERENCE.md)
+* [Audit & Security Report](docs/AUDIT_AND_SECURITY.md)
+* [Deployment Guide](docs/DEPLOYMENT.md)
+
+---
+
+## 📄 License
+
+The FleetBe backend is licensed under the [MIT License](LICENSE).

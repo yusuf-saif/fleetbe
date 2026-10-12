@@ -1,53 +1,65 @@
-name: 'Vehicle Assignments'
+name: Suppliers
 description: |-
 
-  APIs for managing vehicle assignments
+  APIs for managing suppliers
 endpoints:
   -
     httpMethods:
       - GET
-    uri: api/v1/vehicle-assignments/current
+    uri: api/v1/suppliers
     metadata:
-      groupName: 'Vehicle Assignments'
+      groupName: Suppliers
       groupDescription: |-
 
-        APIs for managing vehicle assignments
+        APIs for managing suppliers
       subgroup: ''
       subgroupDescription: ''
-      title: 'List current active vehicle assignments'
-      description: 'Returns all assignments that are currently active (released_at is null or in the future)'
+      title: 'List suppliers'
+      description: 'Returns a list of suppliers. Use query parameters to eager load category details.'
       authenticated: true
       deprecated: false
       custom: []
     headers:
+      Authorization: 'Bearer {token}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters:
-      driver_id:
-        name: driver_id
-        description: 'nullable Filter by driver ID.'
+      with_fuel:
+        name: with_fuel
+        description: 'Whether to include fuel details.'
         required: false
-        example: 2
-        type: integer
+        example: true
+        type: boolean
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         custom: []
-      vehicle_id:
-        name: vehicle_id
-        description: 'nullable Filter by vehicle ID.'
+      with_spare_parts:
+        name: with_spare_parts
+        description: 'Whether to include spare parts details.'
         required: false
-        example: 5
-        type: integer
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      with_maintenance:
+        name: with_maintenance
+        description: 'Whether to include maintenance details.'
+        required: false
+        example: true
+        type: boolean
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         custom: []
     cleanQueryParameters:
-      driver_id: 2
-      vehicle_id: 5
+      with_fuel: true
+      with_spare_parts: true
+      with_maintenance: true
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -56,150 +68,30 @@ endpoints:
         status: 200
         content: |-
           {
-            "data": [
-              {
-                "id": 1,
-                "vehicle_id": 5,
-                "driver_id": 2,
-                "starting_odometer": "1200.50",
-                "assigned_at": "2025-09-11T08:00:00.000000Z",
-                "released_at": null,
-                "vehicle": { "id": 5, "plate_number": "ABC123" },
-                "driver": { "id": 2, "name": "John Doe" }
-              }
-            ]
+           "data": [
+             {
+               "id": 1,
+               "supplier_name": "Acme Supplies",
+               "location": "Lagos",
+               "contact_person_name": "Jane Doe",
+               "contact_person_email": "jane@example.com",
+               "contact_person_phone": "+2348012345678",
+               "created_at": "2025-09-09T12:00:00.000000Z",
+               "updated_at": "2025-09-09T12:00:00.000000Z",
+               "fuelDetails": [
+                   //optional when with_fuel=1
+               ]
+             }
+           ]
           }
         headers: []
         description: ''
         custom: []
     responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-    custom: []
-  -
-    httpMethods:
-      - GET
-    uri: 'api/v1/vehicle-assignments/driver/{driver_id}'
-    metadata:
-      groupName: 'Vehicle Assignments'
-      groupDescription: |-
-
-        APIs for managing vehicle assignments
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'List all assignments for a specific driver'
-      description: ''
-      authenticated: true
-      deprecated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      driver_id:
-        name: driver_id
-        description: 'Driver ID.'
-        required: true
-        example: 2
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-    cleanUrlParameters:
-      driver_id: 2
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        status: 200
-        content: |-
-          {
-            "data": [
-              {
-                "id": 1,
-                "vehicle_id": 5,
-                "driver_id": 2,
-                "starting_odometer": "1200.50",
-                "assigned_at": "2025-09-11T08:00:00.000000Z",
-                "released_at": null,
-                "vehicle": { "id": 5, "plate_number": "ABC123" }
-              }
-            ]
-          }
-        headers: []
-        description: ''
-        custom: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-    custom: []
-  -
-    httpMethods:
-      - GET
-    uri: 'api/v1/vehicle-assignments/vehicle/{vehicle_id}'
-    metadata:
-      groupName: 'Vehicle Assignments'
-      groupDescription: |-
-
-        APIs for managing vehicle assignments
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'List all assignments for a specific vehicle'
-      description: ''
-      authenticated: true
-      deprecated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      vehicle_id:
-        name: vehicle_id
-        description: 'Vehicle ID.'
-        required: true
-        example: 5
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-    cleanUrlParameters:
-      vehicle_id: 5
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        status: 200
-        content: |-
-          {
-            "data": [
-              {
-                "id": 1,
-                "vehicle_id": 5,
-                "driver_id": 2,
-                "starting_odometer": "1200.50",
-                "assigned_at": "2025-09-11T08:00:00.000000Z",
-                "released_at": null,
-                "driver": { "id": 2, "name": "John Doe" }
-              }
-            ]
-          }
-        headers: []
-        description: ''
-        custom: []
-    responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -207,217 +99,21 @@ endpoints:
   -
     httpMethods:
       - POST
-    uri: 'api/v1/vehicle-assignments/{assignment_id}/release'
+    uri: api/v1/suppliers
     metadata:
-      groupName: 'Vehicle Assignments'
+      groupName: Suppliers
       groupDescription: |-
 
-        APIs for managing vehicle assignments
+        APIs for managing suppliers
       subgroup: ''
       subgroupDescription: ''
-      title: 'Release a vehicle assignment'
-      description: 'Marks the vehicle as available again after its assignment ends.'
+      title: 'Create a supplier'
+      description: 'Create a new supplier and optionally link it to fuel, spare part, or maintenance.'
       authenticated: true
       deprecated: false
       custom: []
     headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      assignment_id:
-        name: assignment_id
-        description: 'The ID of the assignment.'
-        required: true
-        example: 16
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      assignment:
-        name: assignment
-        description: 'The ID of the vehicle assignment.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-    cleanUrlParameters:
-      assignment_id: 16
-      assignment: 1
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      released_at:
-        name: released_at
-        description: |-
-          The date and time the vehicle was released.
-          Must be on or after the assigned_at date.
-        required: true
-        example: '2025-09-30 14:30:00'
-        type: date
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-    cleanBodyParameters:
-      released_at: '2025-09-30 14:30:00'
-    fileParameters: []
-    responses:
-      -
-        status: 200
-        content: |-
-          {
-            "id": 1,
-            "vehicle_id": 10,
-            "driver_id": 5,
-            "starting_odometer": 12000,
-            "assigned_by_id": 2,
-            "assigned_to_id": 3,
-            "assigned_at": "2025-09-29 09:00:00",
-            "released_at": "2025-09-30 14:30:00",
-            "vehicle": {
-              "id": 10,
-              "title": "Toyota Hilux",
-              "status": "available"
-            },
-            "driver": {
-              "id": 5,
-              "name": "John Doe"
-            },
-            "assigned_by": {
-              "id": 2,
-              "name": "Jane Smith"
-            }
-          }
-        headers: []
-        description: ''
-        custom: []
-      -
-        status: 409
-        content: |-
-          {
-            "message": "This assignment has already been released."
-          }
-        headers: []
-        description: ''
-        custom: []
-      -
-        status: 422
-        content: |-
-          {
-            "message": "The given data was invalid.",
-            "errors": {
-              "released_at": [
-                "The released at field is required."
-              ]
-            }
-          }
-        headers: []
-        description: ''
-        custom: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-    custom: []
-  -
-    httpMethods:
-      - GET
-    uri: api/v1/vehicle-assignments
-    metadata:
-      groupName: 'Vehicle Assignments'
-      groupDescription: |-
-
-        APIs for managing vehicle assignments
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'List vehicle assignments'
-      description: 'Returns all vehicle assignments. Supports optional filtering by driver or vehicle.'
-      authenticated: true
-      deprecated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters:
-      driver_id:
-        name: driver_id
-        description: 'Filter by driver ID.'
-        required: false
-        example: 2
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-      vehicle_id:
-        name: vehicle_id
-        description: 'Filter by vehicle ID.'
-        required: false
-        example: 5
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-    cleanQueryParameters:
-      driver_id: 2
-      vehicle_id: 5
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        status: 200
-        content: |-
-          {
-            "data": [
-              {
-                "id": 1,
-                "vehicle_id": 5,
-                "driver_id": 2,
-                "starting_odometer": "1200.50",
-                "assigned_by_id": 1,
-                "assigned_at": "2025-09-11T08:00:00.000000Z",
-                "released_at": null,
-                "vehicle": { "id": 5, "plate_number": "ABC123" },
-                "driver": { "id": 2, "name": "John Doe" },
-                "assignedBy": { "id": 1, "name": "Admin Staff" }
-              }
-            ]
-          }
-        headers: []
-        description: ''
-        custom: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-    custom: []
-  -
-    httpMethods:
-      - POST
-    uri: api/v1/vehicle-assignments
-    metadata:
-      groupName: 'Vehicle Assignments'
-      groupDescription: |-
-
-        APIs for managing vehicle assignments
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Create a vehicle assignment'
-      description: 'Assign a vehicle to a driver.'
-      authenticated: true
-      deprecated: false
-      custom: []
-    headers:
+      Authorization: 'Bearer {token}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -425,84 +121,95 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      vehicle_id:
-        name: vehicle_id
-        description: 'Vehicle ID.'
+      supplier_name:
+        name: supplier_name
+        description: "The supplier's display name."
         required: true
+        example: '"Oando PLC"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      location:
+        name: location
+        description: 'Supplier location.'
+        required: true
+        example: '"Lagos"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      contact_person_name:
+        name: contact_person_name
+        description: 'nullable Contact person name.'
+        required: false
+        example: '"John Doe"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      contact_person_email:
+        name: contact_person_email
+        description: 'nullable Contact person email.'
+        required: false
+        example: '"john@oando.com"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      contact_person_phone:
+        name: contact_person_phone
+        description: 'nullable Contact person phone.'
+        required: false
+        example: '"+2348012345678"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      fuel_id:
+        name: fuel_id
+        description: 'nullable Fuel ID to attach to this supplier.'
+        required: false
+        example: 3
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      spare_part_id:
+        name: spare_part_id
+        description: 'nullable Spare part ID to attach to this supplier.'
+        required: false
         example: 5
         type: integer
         enumValues: []
         exampleWasSpecified: true
-        nullable: false
+        nullable: true
         custom: []
-      driver_id:
-        name: driver_id
-        description: 'Driver ID.'
-        required: true
+      maintenance_id:
+        name: maintenance_id
+        description: 'nullable Maintenance ID to attach to this supplier.'
+        required: false
         example: 2
         type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-      starting_odometer:
-        name: starting_odometer
-        description: 'nullable Starting odometer.'
-        required: false
-        example: 1200.5
-        type: number
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        custom: []
-      assigned_by_id:
-        name: assigned_by_id
-        description: 'nullable Staff ID who assigned the vehicle.'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        custom: []
-      assigned_to_id:
-        name: assigned_to_id
-        description: 'nullable Staff ID who assigned the vehicle.'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        custom: []
-      assigned_at:
-        name: assigned_at
-        description: 'nullable Assignment start time.'
-        required: false
-        example: '"2025-09-11 08:00:00"'
-        type: datetime
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        custom: []
-      released_at:
-        name: released_at
-        description: 'nullable Assignment end time.'
-        required: false
-        example: '"2025-09-20 17:00:00"'
-        type: datetime
         enumValues: []
         exampleWasSpecified: true
         nullable: true
         custom: []
     cleanBodyParameters:
-      vehicle_id: 5
-      driver_id: 2
-      starting_odometer: 1200.5
-      assigned_by_id: 1
-      assigned_to_id: 1
-      assigned_at: '"2025-09-11 08:00:00"'
-      released_at: '"2025-09-20 17:00:00"'
+      supplier_name: '"Oando PLC"'
+      location: '"Lagos"'
+      contact_person_name: '"John Doe"'
+      contact_person_email: '"john@oando.com"'
+      contact_person_phone: '"+2348012345678"'
+      fuel_id: 3
+      spare_part_id: 5
+      maintenance_id: 2
     fileParameters: []
     responses:
       -
@@ -510,23 +217,43 @@ endpoints:
         content: |-
           {
             "id": 1,
-            "vehicle_id": 5,
-            "driver_id": 2,
-            "starting_odometer": "1200.50",
-            "assigned_by_id": 1,
-            "assigned_to_id": 2,
-            "assigned_at": "2025-09-11T08:00:00.000000Z",
-            "released_at": null,
-            "vehicle": { "id": 5, "plate_number": "ABC123" },
-            "driver": { "id": 2, "name": "John Doe" },
-            "assignedBy": { "id": 1, "name": "Admin Staff" }
-            "assignedTo": { "id": 1, "name": "Company Staff" }
+            "supplier_name": "Oando PLC",
+            "location": "Lagos",
+            "contact_person_name": "John Doe",
+            "contact_person_email": "john@oando.com",
+            "contact_person_phone": "+2348012345678",
+            "fuelDetails": [
+              {
+                "id": 1,
+                "fuel_id": 3,
+                "fuel": {
+                  "id": 3,
+                  "title": "Diesel"
+                }
+              }
+            ],
+            "sparePartDetails": [
+              {
+                "id": 1,
+                "spare_part_id": 5,
+                "sparePart": {
+                  "id": 5,
+                  "title": "Brake Pad"
+                }
+              }
+            ],
+            "maintenanceProviderDetails": [],
+            "created_at": "2025-09-11T12:00:00.000000Z",
+            "updated_at": "2025-09-11T12:00:00.000000Z"
           }
         headers: []
         description: ''
         custom: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -534,26 +261,27 @@ endpoints:
   -
     httpMethods:
       - GET
-    uri: 'api/v1/vehicle-assignments/{id}'
+    uri: 'api/v1/suppliers/{id}'
     metadata:
-      groupName: 'Vehicle Assignments'
+      groupName: Suppliers
       groupDescription: |-
 
-        APIs for managing vehicle assignments
+        APIs for managing suppliers
       subgroup: ''
       subgroupDescription: ''
-      title: 'Show vehicle assignment'
-      description: 'Get details of a single assignment.'
+      title: 'Show supplier'
+      description: 'Retrieve a supplier by id, with optional category details.'
       authenticated: true
       deprecated: false
       custom: []
     headers:
+      Authorization: 'Bearer {token}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
       id:
         name: id
-        description: 'Assignment ID.'
+        description: 'Supplier id.'
         required: true
         example: 1
         type: integer
@@ -563,8 +291,41 @@ endpoints:
         custom: []
     cleanUrlParameters:
       id: 1
-    queryParameters: []
-    cleanQueryParameters: []
+    queryParameters:
+      with_fuel:
+        name: with_fuel
+        description: 'Whether to include fuel details.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      with_spare_parts:
+        name: with_spare_parts
+        description: 'Whether to include spare parts details.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      with_maintenance:
+        name: with_maintenance
+        description: 'Whether to include maintenance details.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      with_fuel: true
+      with_spare_parts: true
+      with_maintenance: true
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -573,22 +334,32 @@ endpoints:
         status: 200
         content: |-
           {
-            "id": 1,
-            "vehicle_id": 5,
-            "driver_id": 2,
-            "starting_odometer": "1200.50",
-            "assigned_by_id": 1,
-            "assigned_at": "2025-09-11T08:00:00.000000Z",
-            "released_at": null,
-            "vehicle": { "id": 5, "plate_number": "ABC123" },
-            "driver": { "id": 2, "name": "John Doe" },
-            "assignedBy": { "id": 1, "name": "Admin Staff" }
+           "id": 1,
+           "supplier_name": "Acme Supplies",
+           "location": "Ikeja",
+           "contact_person_name": "Jane Doe",
+           "contact_person_email": "jane@example.com",
+           "contact_person_phone": "+2348012345678",
+               "fuelDetails": [
+                   //optional
+               ],
+           "sparePartDetails": [
+                   //optional
+               ],
+           "maintenanceProviderDetails": [
+                   //optional
+               ],
+           "created_at": "2025-09-09T12:00:00.000000Z",
+           "updated_at": "2025-09-09T12:00:00.000000Z"
           }
         headers: []
         description: ''
         custom: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -597,26 +368,27 @@ endpoints:
     httpMethods:
       - PUT
       - PATCH
-    uri: 'api/v1/vehicle-assignments/{id}'
+    uri: 'api/v1/suppliers/{id}'
     metadata:
-      groupName: 'Vehicle Assignments'
+      groupName: Suppliers
       groupDescription: |-
 
-        APIs for managing vehicle assignments
+        APIs for managing suppliers
       subgroup: ''
       subgroupDescription: ''
-      title: 'Update vehicle assignment'
-      description: 'Update the assignment details, e.g., released_at.'
+      title: 'Update supplier'
+      description: 'Update supplier information.'
       authenticated: true
       deprecated: false
       custom: []
     headers:
+      Authorization: 'Bearer {token}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
       id:
         name: id
-        description: 'Assignment ID.'
+        description: 'Supplier id.'
         required: true
         example: 1
         type: integer
@@ -629,73 +401,85 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      starting_odometer:
-        name: starting_odometer
-        description: 'nullable Starting odometer.'
+      supplier_name:
+        name: supplier_name
+        description: 'sometimes Supplier name.'
         required: false
-        example: 1200.5
-        type: number
+        example: '"Acme Supplies Updated"'
+        type: string
         enumValues: []
         exampleWasSpecified: true
+        nullable: false
+        custom: []
+      location:
+        name: location
+        description: 'sometimes Supplier location.'
+        required: false
+        example: '"Ikeja"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      contact_person_name:
+        name: contact_person_name
+        description: 'Must not be greater than 255 characters.'
+        required: false
+        example: g
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
         nullable: true
         custom: []
-      assigned_by_id:
-        name: assigned_by_id
-        description: 'nullable Staff ID who assigned the vehicle.'
+      contact_person_email:
+        name: contact_person_email
+        description: 'Must be a valid email address. Must not be greater than 255 characters.'
         required: false
-        example: 1
-        type: integer
+        example: rowan.gulgowski@example.com
+        type: string
         enumValues: []
-        exampleWasSpecified: true
+        exampleWasSpecified: false
         nullable: true
         custom: []
-      assigned_at:
-        name: assigned_at
-        description: 'nullable Assignment start time.'
+      contact_person_phone:
+        name: contact_person_phone
+        description: 'Must not be greater than 50 characters.'
         required: false
-        example: '"2025-09-11 08:00:00"'
-        type: datetime
+        example: d
+        type: string
         enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        custom: []
-      released_at:
-        name: released_at
-        description: 'nullable Assignment end time.'
-        required: false
-        example: '"2025-09-20 17:00:00"'
-        type: datetime
-        enumValues: []
-        exampleWasSpecified: true
+        exampleWasSpecified: false
         nullable: true
         custom: []
     cleanBodyParameters:
-      starting_odometer: 1200.5
-      assigned_by_id: 1
-      assigned_at: '"2025-09-11 08:00:00"'
-      released_at: '"2025-09-20 17:00:00"'
+      supplier_name: '"Acme Supplies Updated"'
+      location: '"Ikeja"'
+      contact_person_name: g
+      contact_person_email: rowan.gulgowski@example.com
+      contact_person_phone: d
     fileParameters: []
     responses:
       -
         status: 200
         content: |-
           {
-            "id": 1,
-            "vehicle_id": 5,
-            "driver_id": 2,
-            "starting_odometer": "1200.50",
-            "assigned_by_id": 1,
-            "assigned_at": "2025-09-11T08:00:00.000000Z",
-            "released_at": "2025-09-20T17:00:00.000000Z",
-            "vehicle": { "id": 5, "plate_number": "ABC123" },
-            "driver": { "id": 2, "name": "John Doe" },
-            "assignedBy": { "id": 1, "name": "Admin Staff" }
+           "id": 1,
+           "supplier_name": "Acme Supplies Updated",
+           "location": "Ikeja",
+           "contact_person_name": null,
+           "contact_person_email": null,
+           "contact_person_phone": null,
+           "created_at": "2025-09-09T12:00:00.000000Z",
+           "updated_at": "2025-09-10T08:00:00.000000Z"
           }
         headers: []
         description: ''
         custom: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -703,26 +487,27 @@ endpoints:
   -
     httpMethods:
       - DELETE
-    uri: 'api/v1/vehicle-assignments/{id}'
+    uri: 'api/v1/suppliers/{id}'
     metadata:
-      groupName: 'Vehicle Assignments'
+      groupName: Suppliers
       groupDescription: |-
 
-        APIs for managing vehicle assignments
+        APIs for managing suppliers
       subgroup: ''
       subgroupDescription: ''
-      title: 'Delete vehicle assignment'
-      description: 'Remove a vehicle assignment record.'
+      title: 'Delete supplier'
+      description: 'Remove a supplier from the system.'
       authenticated: true
       deprecated: false
       custom: []
     headers:
+      Authorization: 'Bearer {token}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
       id:
         name: id
-        description: 'Assignment ID.'
+        description: 'Supplier id.'
         required: true
         example: 1
         type: integer
@@ -745,7 +530,10 @@ endpoints:
         description: ''
         custom: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

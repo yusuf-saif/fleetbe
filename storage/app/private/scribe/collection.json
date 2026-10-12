@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "FleetManagement API Documentation",
-        "_postman_id": "406b8fcf-bbb0-4fd9-bb4d-93accb8ae9c3",
+        "_postman_id": "29ee1aae-8b52-4428-906d-346003acaf5f",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -562,7 +562,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"architecto\",\"email\":\"gbailey@example.net\",\"phone_number\":\"architecto\",\"password\":\"|]|{+-\",\"next_kin_name\":\"architecto\",\"next_kin_relationship\":\"w\",\"next_kin_phone\":\"aykcmyuwpwlvqwrs\",\"next_kin_email\":\"bauch.marcelo@example.com\",\"next_kin_residential_address\":\"architecto\",\"genotype\":\"architecto\",\"allergies\":[\"n\"],\"medical_challenge\":[\"g\"],\"eye_condition\":[\"z\"],\"residential_address\":\"architecto\",\"home_address\":\"architecto\",\"state\":\"architecto\",\"lga\":\"architecto\",\"town\":\"architecto\",\"nationality\":\"architecto\",\"state_of_origin\":\"architecto\",\"lga_of_origin\":\"architecto\",\"town_of_origin\":\"architecto\",\"date_of_birth\":\"2026-10-05T19:57:07\",\"driver_license\":\"architecto\",\"license_expiry_date\":\"architecto\",\"must_change_password\":true}"
+                            "raw": "{\"name\":\"architecto\",\"email\":\"gbailey@example.net\",\"phone_number\":\"architecto\",\"password\":\"|]|{+-\",\"next_kin_name\":\"architecto\",\"next_kin_relationship\":\"w\",\"next_kin_phone\":\"aykcmyuwpwlvqwrs\",\"next_kin_email\":\"bauch.marcelo@example.com\",\"next_kin_residential_address\":\"architecto\",\"genotype\":\"architecto\",\"allergies\":[\"n\"],\"medical_challenge\":[\"g\"],\"eye_condition\":[\"z\"],\"residential_address\":\"architecto\",\"home_address\":\"architecto\",\"state\":\"architecto\",\"lga\":\"architecto\",\"town\":\"architecto\",\"nationality\":\"architecto\",\"state_of_origin\":\"architecto\",\"lga_of_origin\":\"architecto\",\"town_of_origin\":\"architecto\",\"date_of_birth\":\"2026-10-12T00:27:59\",\"driver_license\":\"architecto\",\"license_expiry_date\":\"architecto\",\"must_change_password\":false}"
                         },
                         "description": "Update driver fields. Password is optional; when present it will be hashed.",
                         "auth": {
@@ -627,7 +627,55 @@
                                 }
                             ],
                             "code": 500,
-                            "body": "{\"success\":false,\"message\":\"SQLSTATE[08006] [7] connection to server at \\\"127.0.0.1\\\", port 5432 failed: Connection refused\\n\\tIs the server running on that host and accepting TCP\\\/IP connections? (Connection: pgsql, SQL: select * from \\\"cache\\\" where \\\"key\\\" in (fleetmanagement-cache-a75f3f172bfb296f2e10cbfc6dfc1883))\"}",
+                            "body": "{\"success\":false,\"message\":\"Something went wrong. Please try again later.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "GET api\/documentation",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/documentation",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/documentation"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 500,
+                            "body": "{\"success\":false,\"message\":\"Something went wrong. Please try again later.\"}",
                             "name": ""
                         }
                     ]
@@ -745,8 +793,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 401,
-                            "body": "{\"success\":false,\"message\":\"Unauthenticated\"}",
+                            "code": 500,
+                            "body": "{\"success\":false,\"message\":\"Something went wrong. Please try again later.\"}",
                             "name": ""
                         }
                     ]
@@ -781,7 +829,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"title\":\"architecto\",\"fuel_type\":\"gas\",\"reserve_level\":39,\"unit\":\"gzmiyv\",\"quantity_allocated\":42,\"quantity_remaining\":37}"
+                            "raw": "{\"title\":\"architecto\",\"fuel_type\":\"diesel\",\"reserve_level\":39,\"unit\":\"gzmiyv\",\"quantity_allocated\":42,\"quantity_remaining\":37}"
                         },
                         "description": ""
                     },
@@ -1048,6 +1096,128 @@
                         }
                     },
                     "response": []
+                }
+            ]
+        },
+        {
+            "name": "Organizations",
+            "description": "\nAPIs for managing tenant organizations",
+            "item": [
+                {
+                    "name": "List all organizations",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/organizations",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/organizations"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Retrieve a list of all registered organizations.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"organization_name\": \"Finecore Ltd\",\n      \"created_at\": \"2025-09-01T00:00:00.000000Z\"\n    }\n  ]\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create an organization",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/organizations",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/organizations"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"organization_name\":\"Finecore Ltd\"}"
+                        },
+                        "description": "Create a new organization in the system.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\n  \"success\": true,\n  \"message\": \"Organization created successfully.\",\n  \"data\": {\n    \"id\": 1,\n    \"organization_name\": \"Finecore Ltd\"\n  }\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get an organization",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/organizations\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/organizations\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The organization ID."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "View details of a specific organization.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": 1,\n    \"organization_name\": \"Finecore Ltd\"\n  }\n}",
+                            "name": ""
+                        }
+                    ]
                 }
             ]
         },
@@ -2286,7 +2456,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"Toyota Corolla\",\"type\":\"Car\",\"manufacturer\":\"architecto\",\"condition\":\"In Good Condition\",\"status\":\"Inactive\",\"fuel_capacity\":39,\"date_purchased\":\"2026-10-05T19:57:07\",\"fuel_type\":[\"g\"]}"
+                            "raw": "{\"name\":\"Toyota Corolla\",\"type\":\"Car\",\"manufacturer\":\"architecto\",\"condition\":\"Flagged for Repair\",\"status\":\"Inactive\",\"fuel_capacity\":39,\"date_purchased\":\"2026-10-12T00:27:59\",\"fuel_type\":[\"g\"]}"
                         },
                         "description": ""
                     },
@@ -2343,6 +2513,12 @@
         }
     ],
     "auth": {
-        "type": "noauth"
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "Authorization",
+                "type": "string"
+            }
+        ]
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\DriverAuthController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\FuelController;
 use App\Http\Controllers\MaintenanceController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\SparePartController;
 use App\Http\Controllers\StatusController;
@@ -16,6 +17,9 @@ use Illuminate\Http\Request;
 
 Route::prefix('v1')->group(function () {
     Route::get("/status", [StatusController::class, "status"]);
+    Route::get('/organizations', [OrganizationController::class, 'index']);
+    Route::post('/organizations', [OrganizationController::class, 'store']);
+    Route::get('/organizations/{id}', [OrganizationController::class, 'show']);
     Route::prefix('auth')->group(function () {
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/login', [AuthController::class, 'login']);

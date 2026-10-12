@@ -1,185 +1,22 @@
-name: Authentication
-description: ''
+name: Organizations
+description: |-
+
+  APIs for managing tenant organizations
 endpoints:
   -
     httpMethods:
-      - POST
-    uri: api/v1/auth/register
+      - GET
+    uri: api/v1/organizations
     metadata:
-      groupName: Authentication
-      groupDescription: ''
+      groupName: Organizations
+      groupDescription: |-
+
+        APIs for managing tenant organizations
       subgroup: ''
       subgroupDescription: ''
-      title: 'Register a new user'
-      description: 'This endpoint registers a user and returns the user details with a token.'
+      title: 'List all organizations'
+      description: 'Retrieve a list of all registered organizations.'
       authenticated: false
-      deprecated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      name:
-        name: name
-        description: 'The name of the user.'
-        required: true
-        example: 'Hassan Sani'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-      email:
-        name: email
-        description: 'The email of the user.'
-        required: true
-        example: hassan@example.com
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-      password:
-        name: password
-        description: 'The password.'
-        required: true
-        example: secret123
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-      password_confirmation:
-        name: password_confirmation
-        description: 'Confirm the password.'
-        required: true
-        example: secret123
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-    cleanBodyParameters:
-      name: 'Hassan Sani'
-      email: hassan@example.com
-      password: secret123
-      password_confirmation: secret123
-    fileParameters: []
-    responses:
-      -
-        status: 201
-        content: |-
-          {
-           "message": "User registered and logged in successfully",
-           "user": {
-               "id": 1,
-               "name": "Hassan Sani",
-               "email": "hassan@example.com"
-           }
-          }
-        headers: []
-        description: ''
-        custom: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-    custom: []
-  -
-    httpMethods:
-      - POST
-    uri: api/v1/auth/login
-    metadata:
-      groupName: Authentication
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Login a user'
-      description: 'This endpoint allows a user to log in and receive a Bearer token.'
-      authenticated: false
-      deprecated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      email:
-        name: email
-        description: 'The user’s email.'
-        required: true
-        example: hassan@example.com
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-      password:
-        name: password
-        description: 'The user’s password.'
-        required: true
-        example: secret123
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-    cleanBodyParameters:
-      email: hassan@example.com
-      password: secret123
-    fileParameters: []
-    responses:
-      -
-        status: 200
-        content: |-
-          {
-           "message": "Login successful",
-           "token": "1|ZpRzVvq4UIq2p...xyz",
-           "user": {
-               "id": 1,
-               "name": "Hassan Sani",
-               "email": "hassan@example.com",
-               "organization_staff": {
-                   "id": 5,
-                   "staff_position": "Manager",
-                   "staff_status": "Active",
-                   "staff_level": "Senior",
-                   "organization": {
-                       "id": 2,
-                       "organization_name": "Finecore Ltd"
-                   }
-               }
-           }
-          }
-        headers: []
-        description: ''
-        custom: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-    custom: []
-  -
-    httpMethods:
-      - POST
-    uri: api/v1/auth/logout
-    metadata:
-      groupName: Authentication
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Logout the current user'
-      description: 'This endpoint revokes the current access token.'
-      authenticated: true
       deprecated: false
       custom: []
     headers:
@@ -197,7 +34,14 @@ endpoints:
         status: 200
         content: |-
           {
-            "message": "Logged out successfully"
+            "success": true,
+            "data": [
+              {
+                "id": 1,
+                "organization_name": "Finecore Ltd",
+                "created_at": "2025-09-01T00:00:00.000000Z"
+              }
+            ]
           }
         headers: []
         description: ''
@@ -211,14 +55,16 @@ endpoints:
   -
     httpMethods:
       - POST
-    uri: api/v1/auth/forgot-password
+    uri: api/v1/organizations
     metadata:
-      groupName: Authentication
-      groupDescription: ''
+      groupName: Organizations
+      groupDescription: |-
+
+        APIs for managing tenant organizations
       subgroup: ''
       subgroupDescription: ''
-      title: 'Forgot password (send reset link)'
-      description: ''
+      title: 'Create an organization'
+      description: 'Create a new organization in the system.'
       authenticated: false
       deprecated: false
       custom: []
@@ -230,20 +76,34 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      email:
-        name: email
-        description: 'Must be a valid email address.'
+      organization_name:
+        name: organization_name
+        description: 'The legal/trade name of the organization.'
         required: true
-        example: gbailey@example.net
+        example: 'Finecore Ltd'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
     cleanBodyParameters:
-      email: gbailey@example.net
+      organization_name: 'Finecore Ltd'
     fileParameters: []
-    responses: []
+    responses:
+      -
+        status: 201
+        content: |-
+          {
+            "success": true,
+            "message": "Organization created successfully.",
+            "data": {
+              "id": 1,
+              "organization_name": "Finecore Ltd"
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
     responseFields: []
     auth: []
     controller: null
@@ -252,62 +112,55 @@ endpoints:
     custom: []
   -
     httpMethods:
-      - POST
-    uri: api/v1/auth/reset-password
+      - GET
+    uri: 'api/v1/organizations/{id}'
     metadata:
-      groupName: Authentication
-      groupDescription: ''
+      groupName: Organizations
+      groupDescription: |-
+
+        APIs for managing tenant organizations
       subgroup: ''
       subgroupDescription: ''
-      title: 'Reset password'
-      description: ''
+      title: 'Get an organization'
+      description: 'View details of a specific organization.'
       authenticated: false
       deprecated: false
       custom: []
     headers:
       Content-Type: application/json
       Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
+    urlParameters:
+      id:
+        name: id
+        description: 'The organization ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
-    bodyParameters:
-      token:
-        name: token
-        description: ''
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      email:
-        name: email
-        description: 'Must be a valid email address.'
-        required: true
-        example: zbailey@example.net
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      password:
-        name: password
-        description: 'Must be at least 6 characters.'
-        required: true
-        example: '-0pBNvYgxw'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-    cleanBodyParameters:
-      token: architecto
-      email: zbailey@example.net
-      password: '-0pBNvYgxw'
+    bodyParameters: []
+    cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "data": {
+              "id": 1,
+              "organization_name": "Finecore Ltd"
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
     responseFields: []
     auth: []
     controller: null

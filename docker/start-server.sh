@@ -20,8 +20,9 @@ mkdir -p \
 chown -R www-data:www-data storage bootstrap/cache 2>/dev/null || true
 chmod -R 777 storage bootstrap/cache 2>/dev/null || true
 
-# Automatically run database migrations on boot
+# Automatically run database migrations and seed default organization on boot
 php artisan migrate --force --no-interaction || true
+php artisan db:seed --class=DatabaseSeeder --force --no-interaction || true
 
 php-fpm --daemonize
 

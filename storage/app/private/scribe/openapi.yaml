@@ -26,6 +26,9 @@ tags:
     name: Maintenances
     description: "\nAPIs for managing maintenance configurations"
   -
+    name: Organizations
+    description: "\nAPIs for managing tenant organizations"
+  -
     name: 'Resource & Maintenance Requests'
     description: "\nAPIs for managing fuel, spare part, and maintenance requests"
   -
@@ -40,6 +43,15 @@ tags:
   -
     name: Vehicles
     description: ''
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: 'Send your Sanctum token in the <code>Authorization: Bearer &lt;token&gt;</code> header.'
+security:
+  -
+    default: []
 paths:
   /api/v1/auth/register:
     post:
@@ -1138,7 +1150,7 @@ paths:
                 date_of_birth:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-10-05T19:57:07'
+                  example: '2026-10-12T00:27:59'
                   nullable: true
                 driver_license:
                   type: string
@@ -1153,7 +1165,7 @@ paths:
                 must_change_password:
                   type: boolean
                   description: ''
-                  example: true
+                  example: false
                   nullable: false
       security: []
     parameters:
@@ -1180,14 +1192,40 @@ paths:
                 type: object
                 example:
                   success: false
-                  message: "SQLSTATE[08006] [7] connection to server at \"127.0.0.1\", port 5432 failed: Connection refused\n\tIs the server running on that host and accepting TCP/IP connections? (Connection: pgsql, SQL: select * from \"cache\" where \"key\" in (fleetmanagement-cache-a75f3f172bfb296f2e10cbfc6dfc1883))"
+                  message: 'Something went wrong. Please try again later.'
                 properties:
                   success:
                     type: boolean
                     example: false
                   message:
                     type: string
-                    example: "SQLSTATE[08006] [7] connection to server at \"127.0.0.1\", port 5432 failed: Connection refused\n\tIs the server running on that host and accepting TCP/IP connections? (Connection: pgsql, SQL: select * from \"cache\" where \"key\" in (fleetmanagement-cache-a75f3f172bfb296f2e10cbfc6dfc1883))"
+                    example: 'Something went wrong. Please try again later.'
+      tags:
+        - Endpoints
+      security: []
+  /api/documentation:
+    get:
+      summary: ''
+      operationId: getApiDocumentation
+      description: ''
+      parameters: []
+      responses:
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: false
+                  message: 'Something went wrong. Please try again later.'
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Something went wrong. Please try again later.'
       tags:
         - Endpoints
       security: []
@@ -1317,7 +1355,7 @@ paths:
       description: ''
       parameters: []
       responses:
-        401:
+        500:
           description: ''
           content:
             application/json:
@@ -1325,14 +1363,14 @@ paths:
                 type: object
                 example:
                   success: false
-                  message: Unauthenticated
+                  message: 'Something went wrong. Please try again later.'
                 properties:
                   success:
                     type: boolean
                     example: false
                   message:
                     type: string
-                    example: Unauthenticated
+                    example: 'Something went wrong. Please try again later.'
       tags:
         - Fuels
     put:
@@ -1358,7 +1396,7 @@ paths:
                 fuel_type:
                   type: string
                   description: ''
-                  example: gas
+                  example: diesel
                   nullable: false
                   enum:
                     - petrol
@@ -1574,6 +1612,146 @@ paths:
         in: path
         name: id
         description: 'Maintenance ID.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/organizations:
+    get:
+      summary: 'List all organizations'
+      operationId: listAllOrganizations
+      description: 'Retrieve a list of all registered organizations.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  data:
+                    -
+                      id: 1
+                      organization_name: 'Finecore Ltd'
+                      created_at: '2025-09-01T00:00:00.000000Z'
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        organization_name: 'Finecore Ltd'
+                        created_at: '2025-09-01T00:00:00.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        organization_name:
+                          type: string
+                          example: 'Finecore Ltd'
+                        created_at:
+                          type: string
+                          example: '2025-09-01T00:00:00.000000Z'
+      tags:
+        - Organizations
+      security: []
+    post:
+      summary: 'Create an organization'
+      operationId: createAnOrganization
+      description: 'Create a new organization in the system.'
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  message: 'Organization created successfully.'
+                  data:
+                    id: 1
+                    organization_name: 'Finecore Ltd'
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Organization created successfully.'
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      organization_name:
+                        type: string
+                        example: 'Finecore Ltd'
+      tags:
+        - Organizations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                organization_name:
+                  type: string
+                  description: 'The legal/trade name of the organization.'
+                  example: 'Finecore Ltd'
+                  nullable: false
+              required:
+                - organization_name
+      security: []
+  '/api/v1/organizations/{id}':
+    get:
+      summary: 'Get an organization'
+      operationId: getAnOrganization
+      description: 'View details of a specific organization.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  success: true
+                  data:
+                    id: 1
+                    organization_name: 'Finecore Ltd'
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      organization_name:
+                        type: string
+                        example: 'Finecore Ltd'
+      tags:
+        - Organizations
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The organization ID.'
         example: 1
         required: true
         schema:
@@ -3848,7 +4026,7 @@ paths:
                 condition:
                   type: string
                   description: ''
-                  example: 'In Good Condition'
+                  example: 'Flagged for Repair'
                   nullable: false
                   enum:
                     - 'In Good Condition'
@@ -3892,7 +4070,7 @@ paths:
                 date_purchased:
                   type: string
                   description: 'Must be a valid date.'
-                  example: '2026-10-05T19:57:07'
+                  example: '2026-10-12T00:27:59'
                   nullable: true
                 manufactured_year:
                   type: string

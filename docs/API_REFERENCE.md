@@ -8,7 +8,11 @@ Comprehensive reference guide for all endpoints exposed by the **FleetBe** v1 AP
   * `Content-Type: application/json`
 * **Authentication Header:**
   * `Authorization: Bearer <token>`
-* **Interactive UI:** Available locally at `/docs` (Scribe) or OpenAPI reference via Scalar.
+* **Interactive Documentation UIs:**
+  * **Swagger UI:** `/swagger` (also at `/docs/swagger` and `/api/documentation`)
+  * **Scalar UI:** `/scalar`
+  * **Scribe UI:** `/docs`
+  * **Raw OpenAPI Spec:** `/docs.openapi`
 
 ---
 
@@ -26,7 +30,66 @@ Checks API operational status.
 
 ---
 
-## 2. User & Corporate Staff Authentication (`/v1/auth`)
+## 2. Organizations Management (`/v1/organizations`)
+
+### GET `/v1/organizations`
+Lists all registered tenant organizations.
+* **Authentication:** None (Public)
+* **Response (200 OK):**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "organization_name": "My Organization Name",
+      "created_at": "2025-09-01T00:00:00.000000Z"
+    }
+  ]
+}
+```
+
+---
+
+### POST `/v1/organizations`
+Registers a new tenant organization.
+* **Authentication:** None (Public)
+* **Request Body:**
+```json
+{
+  "organization_name": "Acme Logistics Ltd"
+}
+```
+* **Response (201 Created):**
+```json
+{
+  "success": true,
+  "message": "Organization created successfully.",
+  "data": {
+    "id": 2,
+    "organization_name": "Acme Logistics Ltd"
+  }
+}
+```
+
+---
+
+### GET `/v1/organizations/{id}`
+Retrieves a single organization by ID.
+* **Response (200 OK):**
+```json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "organization_name": "My Organization Name"
+  }
+}
+```
+
+---
+
+## 3. User & Corporate Staff Authentication (`/v1/auth`)
 
 ### POST `/v1/auth/register`
 Creates a new corporate user account.

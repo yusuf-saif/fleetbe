@@ -1,20 +1,20 @@
-name: 'Spare Parts'
+name: Maintenances
 description: |-
 
-  APIs for managing spare parts
+  APIs for managing maintenance configurations
 endpoints:
   -
     httpMethods:
       - GET
-    uri: api/v1/sparepart
+    uri: api/v1/maintenance
     metadata:
-      groupName: 'Spare Parts'
+      groupName: Maintenances
       groupDescription: |-
 
-        APIs for managing spare parts
+        APIs for managing maintenance configurations
       subgroup: ''
       subgroupDescription: ''
-      title: 'List Spare Parts'
+      title: 'List Maintenances'
       description: ''
       authenticated: false
       deprecated: false
@@ -70,15 +70,15 @@ endpoints:
   -
     httpMethods:
       - POST
-    uri: api/v1/sparepart
+    uri: api/v1/maintenance
     metadata:
-      groupName: 'Spare Parts'
+      groupName: Maintenances
       groupDescription: |-
 
-        APIs for managing spare parts
+        APIs for managing maintenance configurations
       subgroup: ''
       subgroupDescription: ''
-      title: 'Create Spare Part'
+      title: 'Create Maintenance'
       description: ''
       authenticated: false
       deprecated: false
@@ -93,77 +93,37 @@ endpoints:
     bodyParameters:
       title:
         name: title
-        description: 'The spare part name.'
+        description: 'Maintenance title.'
         required: true
-        example: 'Brake Pad'
+        example: 'Oil Change'
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         custom: []
-      size:
-        name: size
-        description: 'The size.'
-        required: false
-        example: Medium
+      type:
+        name: type
+        description: 'Maintenance type.'
+        required: true
+        example: preventive
         type: string
         enumValues: []
         exampleWasSpecified: true
-        nullable: true
+        nullable: false
         custom: []
-      description:
-        name: description
-        description: 'The description.'
+      frequency:
+        name: frequency
+        description: 'Maintenance frequency.'
         required: false
-        example: 'Eius et animi quos velit et.'
+        example: monthly
         type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        custom: []
-      reserve_quantity:
-        name: reserve_quantity
-        description: 'Default reserve stock.'
-        required: false
-        example: 10
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        custom: []
-      unit:
-        name: unit
-        description: 'Unit of measurement.'
-        required: false
-        example: pcs
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        custom: []
-      quantity_allocated:
-        name: quantity_allocated
-        description: 'Allocated stock.'
-        required: false
-        example: 50
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        custom: []
-      quantity_remaining:
-        name: quantity_remaining
-        description: 'Remaining stock.'
-        required: false
-        example: 20
-        type: integer
         enumValues: []
         exampleWasSpecified: true
         nullable: true
         custom: []
       organization_id:
         name: organization_id
-        description: 'The organization.'
+        description: 'Organization ID.'
         required: true
         example: 1
         type: integer
@@ -172,13 +132,9 @@ endpoints:
         nullable: false
         custom: []
     cleanBodyParameters:
-      title: 'Brake Pad'
-      size: Medium
-      description: 'Eius et animi quos velit et.'
-      reserve_quantity: 10
-      unit: pcs
-      quantity_allocated: 50
-      quantity_remaining: 20
+      title: 'Oil Change'
+      type: preventive
+      frequency: monthly
       organization_id: 1
     fileParameters: []
     responses: []
@@ -191,15 +147,15 @@ endpoints:
   -
     httpMethods:
       - GET
-    uri: 'api/v1/sparepart/{id}'
+    uri: 'api/v1/maintenance/{id}'
     metadata:
-      groupName: 'Spare Parts'
+      groupName: Maintenances
       groupDescription: |-
 
-        APIs for managing spare parts
+        APIs for managing maintenance configurations
       subgroup: ''
       subgroupDescription: ''
-      title: 'Show Spare Part'
+      title: 'Show Maintenance'
       description: ''
       authenticated: false
       deprecated: false
@@ -210,7 +166,7 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'Spare part ID.'
+        description: 'Maintenance ID.'
         required: true
         example: 1
         type: integer
@@ -245,15 +201,15 @@ endpoints:
     httpMethods:
       - PUT
       - PATCH
-    uri: 'api/v1/sparepart/{id}'
+    uri: 'api/v1/maintenance/{id}'
     metadata:
-      groupName: 'Spare Parts'
+      groupName: Maintenances
       groupDescription: |-
 
-        APIs for managing spare parts
+        APIs for managing maintenance configurations
       subgroup: ''
       subgroupDescription: ''
-      title: 'Update Spare Part'
+      title: 'Update Maintenance'
       description: ''
       authenticated: false
       deprecated: false
@@ -264,7 +220,7 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'Spare part ID.'
+        description: 'Maintenance ID.'
         required: true
         example: 1
         type: integer
@@ -287,62 +243,22 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         custom: []
-      size:
-        name: size
+      type:
+        name: type
         description: 'Must not be greater than 255 characters.'
-        required: false
+        required: true
         example: 'n'
         type: string
         enumValues: []
         exampleWasSpecified: false
-        nullable: true
+        nullable: false
         custom: []
-      description:
-        name: description
-        description: ''
+      frequency:
+        name: frequency
+        description: 'Must not be greater than 255 characters.'
         required: false
-        example: 'Eius et animi quos velit et.'
+        example: g
         type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        custom: []
-      reserve_quantity:
-        name: reserve_quantity
-        description: 'Must be at least 0.'
-        required: false
-        example: 60
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        custom: []
-      unit:
-        name: unit
-        description: 'Must not be greater than 20 characters.'
-        required: false
-        example: dljnikhwaykcmyuw
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        custom: []
-      quantity_allocated:
-        name: quantity_allocated
-        description: 'Must be at least 0.'
-        required: false
-        example: 67
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        custom: []
-      quantity_remaining:
-        name: quantity_remaining
-        description: 'Must be at least 0.'
-        required: false
-        example: 61
-        type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: true
@@ -359,12 +275,8 @@ endpoints:
         custom: []
     cleanBodyParameters:
       title: b
-      size: 'n'
-      description: 'Eius et animi quos velit et.'
-      reserve_quantity: 60
-      unit: dljnikhwaykcmyuw
-      quantity_allocated: 67
-      quantity_remaining: 61
+      type: 'n'
+      frequency: g
       organization_id: architecto
     fileParameters: []
     responses: []
@@ -377,15 +289,15 @@ endpoints:
   -
     httpMethods:
       - DELETE
-    uri: 'api/v1/sparepart/{id}'
+    uri: 'api/v1/maintenance/{id}'
     metadata:
-      groupName: 'Spare Parts'
+      groupName: Maintenances
       groupDescription: |-
 
-        APIs for managing spare parts
+        APIs for managing maintenance configurations
       subgroup: ''
       subgroupDescription: ''
-      title: 'Delete Spare Part'
+      title: 'Delete Maintenance'
       description: ''
       authenticated: false
       deprecated: false
@@ -396,7 +308,7 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'Spare part ID.'
+        description: 'Maintenance ID.'
         required: true
         example: 1
         type: integer

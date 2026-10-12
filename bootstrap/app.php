@@ -58,12 +58,13 @@ return Application::configure(basePath: dirname(__DIR__))
             }
         });
 
-        $exceptions->renderable(function (Throwable $e, Request $request) {
-            if ($request->is('api/*')) {
+        $exceptions->renderable(function (\Illuminate\Validation\ValidationException $e, Request $request) {
+            if ($request->is('api/*') || $request->expectsJson()) {
                 return response()->json([
                     'success' => false,
-                    'message' => $e->getMessage() ?: 'Something went wrong.',
-                ], 500);
+                    'message' => 'Validation errors',
+                    'errors'  => $e->errors(),
+                ], 422);
             }
         });
 

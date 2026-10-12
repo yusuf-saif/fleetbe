@@ -1,68 +1,57 @@
-name: Maintenances
-description: |-
-
-  APIs for managing maintenance configurations
+name: Fuels
+description: ''
 endpoints:
   -
     httpMethods:
       - GET
-    uri: api/v1/maintenance
+    uri: api/v1/fuel
     metadata:
-      groupName: Maintenances
-      groupDescription: |-
-
-        APIs for managing maintenance configurations
+      groupName: Fuels
+      groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'List Maintenances'
+      title: 'Get all fuels'
       description: ''
-      authenticated: false
+      authenticated: true
       deprecated: false
       custom: []
     headers:
+      Authorization: 'Bearer {token}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters:
-      organization_id:
-        name: organization_id
-        description: 'Filter by organization.'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-      per_page:
-        name: per_page
-        description: 'Results per page.'
-        required: false
-        example: 20
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        custom: []
-    cleanQueryParameters:
-      organization_id: 1
-      per_page: 20
+    queryParameters: []
+    cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
     responses:
       -
-        status: 401
-        content: '{"success":false,"message":"Unauthenticated"}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "data": [
+              {
+                "id": 1,
+                "title": "Petrol Reserve",
+                "fuel_type": "petrol",
+                "reserve_level": "5000.00",
+                "unit": "l",
+                "quantity_allocated": "1200.00",
+                "quantity_remaining": "3800.00"
+              }
+            ]
+          }
+        headers: []
+        description: Success
         custom: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -70,20 +59,19 @@ endpoints:
   -
     httpMethods:
       - POST
-    uri: api/v1/maintenance
+    uri: api/v1/fuel
     metadata:
-      groupName: Maintenances
-      groupDescription: |-
-
-        APIs for managing maintenance configurations
+      groupName: Fuels
+      groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Create Maintenance'
+      title: 'Create a new fuel'
       description: ''
-      authenticated: false
+      authenticated: true
       deprecated: false
       custom: []
     headers:
+      Authorization: 'Bearer {token}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -93,37 +81,67 @@ endpoints:
     bodyParameters:
       title:
         name: title
-        description: 'Maintenance title.'
+        description: 'The fuel title.'
         required: true
-        example: 'Oil Change'
+        example: 'Petrol Reserve'
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         custom: []
-      type:
-        name: type
-        description: 'Maintenance type.'
+      fuel_type:
+        name: fuel_type
+        description: 'Type of fuel (petrol, diesel, gas).'
         required: true
-        example: preventive
+        example: petrol
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         custom: []
-      frequency:
-        name: frequency
-        description: 'Maintenance frequency.'
+      reserve_level:
+        name: reserve_level
+        description: 'Initial reserve level.'
         required: false
-        example: monthly
+        example: 5000.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      unit:
+        name: unit
+        description: 'The measurement unit.'
+        required: false
+        example: l
         type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      quantity_allocated:
+        name: quantity_allocated
+        description: 'The allocated quantity.'
+        required: false
+        example: 1000.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+      quantity_remaining:
+        name: quantity_remaining
+        description: 'The remaining quantity.'
+        required: false
+        example: 4000.0
+        type: number
         enumValues: []
         exampleWasSpecified: true
         nullable: true
         custom: []
       organization_id:
         name: organization_id
-        description: 'Organization ID.'
+        description: 'The owning organization ID.'
         required: true
         example: 1
         type: integer
@@ -132,14 +150,20 @@ endpoints:
         nullable: false
         custom: []
     cleanBodyParameters:
-      title: 'Oil Change'
-      type: preventive
-      frequency: monthly
+      title: 'Petrol Reserve'
+      fuel_type: petrol
+      reserve_level: 5000.0
+      unit: l
+      quantity_allocated: 1000.0
+      quantity_remaining: 4000.0
       organization_id: 1
     fileParameters: []
     responses: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -147,26 +171,25 @@ endpoints:
   -
     httpMethods:
       - GET
-    uri: 'api/v1/maintenance/{id}'
+    uri: 'api/v1/fuel/{id}'
     metadata:
-      groupName: Maintenances
-      groupDescription: |-
-
-        APIs for managing maintenance configurations
+      groupName: Fuels
+      groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Show Maintenance'
+      title: 'Get a single fuel'
       description: ''
-      authenticated: false
+      authenticated: true
       deprecated: false
       custom: []
     headers:
+      Authorization: 'Bearer {token}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
       id:
         name: id
-        description: 'Maintenance ID.'
+        description: 'The ID of the fuel.'
         required: true
         example: 1
         type: integer
@@ -183,8 +206,8 @@ endpoints:
     fileParameters: []
     responses:
       -
-        status: 401
-        content: '{"success":false,"message":"Unauthenticated"}'
+        status: 500
+        content: '{"success":false,"message":"Something went wrong. Please try again later."}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
@@ -192,7 +215,10 @@ endpoints:
         description: null
         custom: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -201,26 +227,25 @@ endpoints:
     httpMethods:
       - PUT
       - PATCH
-    uri: 'api/v1/maintenance/{id}'
+    uri: 'api/v1/fuel/{id}'
     metadata:
-      groupName: Maintenances
-      groupDescription: |-
-
-        APIs for managing maintenance configurations
+      groupName: Fuels
+      groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Update Maintenance'
+      title: 'Update a fuel'
       description: ''
-      authenticated: false
+      authenticated: true
       deprecated: false
       custom: []
     headers:
+      Authorization: 'Bearer {token}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
       id:
         name: id
-        description: 'Maintenance ID.'
+        description: 'The ID of the fuel.'
         required: true
         example: 1
         type: integer
@@ -235,30 +260,63 @@ endpoints:
     bodyParameters:
       title:
         name: title
-        description: 'Must not be greater than 255 characters.'
-        required: true
-        example: b
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      type:
-        name: type
-        description: 'Must not be greater than 255 characters.'
-        required: true
-        example: 'n'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      frequency:
-        name: frequency
-        description: 'Must not be greater than 255 characters.'
+        description: ''
         required: false
-        example: g
+        example: architecto
         type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      fuel_type:
+        name: fuel_type
+        description: ''
+        required: false
+        example: diesel
+        type: string
+        enumValues:
+          - petrol
+          - diesel
+          - gas
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      reserve_level:
+        name: reserve_level
+        description: 'Must be at least 0.'
+        required: false
+        example: 39
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      unit:
+        name: unit
+        description: 'Must not be greater than 10 characters.'
+        required: false
+        example: gzmiyv
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      quantity_allocated:
+        name: quantity_allocated
+        description: 'Must be at least 0.'
+        required: false
+        example: 42
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      quantity_remaining:
+        name: quantity_remaining
+        description: 'Must be at least 0.'
+        required: false
+        example: 37
+        type: number
         enumValues: []
         exampleWasSpecified: false
         nullable: true
@@ -266,22 +324,27 @@ endpoints:
       organization_id:
         name: organization_id
         description: 'The <code>id</code> of an existing record in the organizations table.'
-        required: true
-        example: architecto
+        required: false
+        example: null
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      title: b
-      type: 'n'
-      frequency: g
-      organization_id: architecto
+      title: architecto
+      fuel_type: diesel
+      reserve_level: 39
+      unit: gzmiyv
+      quantity_allocated: 42
+      quantity_remaining: 37
     fileParameters: []
     responses: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -289,26 +352,25 @@ endpoints:
   -
     httpMethods:
       - DELETE
-    uri: 'api/v1/maintenance/{id}'
+    uri: 'api/v1/fuel/{id}'
     metadata:
-      groupName: Maintenances
-      groupDescription: |-
-
-        APIs for managing maintenance configurations
+      groupName: Fuels
+      groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Delete Maintenance'
+      title: 'Delete a fuel'
       description: ''
-      authenticated: false
+      authenticated: true
       deprecated: false
       custom: []
     headers:
+      Authorization: 'Bearer {token}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
       id:
         name: id
-        description: 'Maintenance ID.'
+        description: 'The ID of the fuel.'
         required: true
         example: 1
         type: integer
@@ -325,7 +387,10 @@ endpoints:
     fileParameters: []
     responses: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
