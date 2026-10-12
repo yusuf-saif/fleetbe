@@ -97,7 +97,7 @@ class VehicleAssignmentController extends Controller
 
         $vehicle = Vehicle::findOrFail($validated['vehicle_id']);
 
-        if ($vehicle->status === 'assigned') {
+        if (strtolower((string) $vehicle->status) === 'assigned') {
             return response()->json([
                 'message' => 'This vehicle is already assigned and cannot be reassigned until released.'
             ], 409);
@@ -296,8 +296,14 @@ class VehicleAssignmentController extends Controller
         }
 
         $validated = $request->validate([
-            'released_at' => 'required|date|after_or_equal:assigned_at',
+            'released_at' => 'required|date',
         ]);
+
+        if ($assignment->assigned_at && strtotime($validated['released_at']) < strtotime($assignment->assigned_at)) {
+            return response()->json([
+                'message' => 'The released_at date cannot be earlier than assigned_at (' . $assignment->assigned_at . ').'
+            ], 422);
+        }
 
         // Update assignment release time
         $assignment->update([

@@ -129,9 +129,18 @@ class RequestsController extends Controller
             'maintenance_type'   => 'nullable|string',
             'description'        => 'nullable|string',
             'with_sparepart'     => 'required|boolean',
-            'spare_part_id'      => 'nullable|required_if:with_sparepart,true|exists:spare_parts,id',
-            'other_sparepart'    => 'nullable|required_if:spare_part_id,null|string|max:255',
+            'spare_part_id'      => 'nullable|exists:spare_parts,id',
+            'other_sparepart'    => 'nullable|string|max:255',
         ]);
+
+        if (!empty($validated['with_sparepart']) && empty($validated['spare_part_id']) && empty($validated['other_sparepart'])) {
+            return response()->json([
+                'message' => 'Validation errors',
+                'errors' => [
+                    'other_sparepart' => ['Either a spare_part_id or an other_sparepart description is required when with_sparepart is true.']
+                ]
+            ], 422);
+        }
 
         $validated['requestable_type'] = strtolower(trim($validated['requestable_type']));
 
@@ -162,7 +171,13 @@ class RequestsController extends Controller
             'quantity_approved' => 'nullable|numeric|min:0',
         ]);
 
-        $requestModel->update(array_merge($validated, ['status' => 'approved']));
+        $approverStaffId = $request->user()?->organizationStaff?->id;
+        $updateData = array_merge($validated, ['status' => 'approved']);
+        if ($approverStaffId) {
+            $updateData['approved_by_id'] = $approverStaffId;
+        }
+
+        $requestModel->update($updateData);
 
         return response()->json($requestModel);
     }

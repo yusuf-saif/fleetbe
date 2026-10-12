@@ -10,6 +10,14 @@ class OrganizationStaff extends Model
     use HasFactory;
     protected $table = 'organization_staffs';
 
+    protected $fillable = [
+        'organization_id',
+        'user_id',
+        'staff_position',
+        'staff_status',
+        'staff_level',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

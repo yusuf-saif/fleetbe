@@ -144,6 +144,12 @@ class DriverAuthController extends Controller
         $data['pin_code'] = $pinCode;
         $data['password_reset_pin'] = $pinCode;
 
+        // Provide sensible defaults for non-nullable next_of_kin DB columns if omitted
+        $data['next_kin_name'] = $data['next_kin_name'] ?? 'N/A';
+        $data['next_kin_relationship'] = $data['next_kin_relationship'] ?? 'N/A';
+        $data['next_kin_phone'] = $data['next_kin_phone'] ?? 'N/A';
+        $data['next_kin_residential_address'] = $data['next_kin_residential_address'] ?? 'N/A';
+
         $driver = Drivers::create($data);
 
         // Send email with PIN
@@ -239,7 +245,7 @@ class DriverAuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete;
+        $request->user()->currentAccessToken()?->delete();
 
         return response()->json(['message' => 'Logged out']);
     }

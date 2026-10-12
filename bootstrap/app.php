@@ -17,7 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->alias([]);
+        $middleware->alias([
+            'staff' => \App\Http\Middleware\EnsureStaffUser::class,
+        ]);
 
         // Railway terminates TLS and forwards requests, so without this every
         // request appears to come from the proxy. That makes throttle:api

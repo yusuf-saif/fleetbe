@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Organization;
+use App\Models\OrganizationStaff;
 use Illuminate\Support\Facades\Password;
 
 /**
@@ -24,6 +26,7 @@ class AuthController extends Controller
      * @bodyParam email string required The email of the user. Example: hassan@example.com
      * @bodyParam password string required The password. Example: secret123
      * @bodyParam password_confirmation string required Confirm the password. Example: secret123
+     * @bodyParam organization_id int nullable The organization ID. Example: 1
      *
      * @response 201 {
      *  "message": "User registered and logged in successfully",
@@ -37,9 +40,10 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
+            'name'            => 'required|string|max:255',
+            'email'           => 'required|string|email|unique:users,email',
+            'password'        => 'required|string|min:6|confirmed',
+            'organization_id' => 'nullable|exists:organizations,id',
         ]);
 
         if ($validator->fails()) {
@@ -55,9 +59,20 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $organizationId = $request->organization_id ?? Organization::first()?->id;
+        if ($organizationId) {
+            OrganizationStaff::create([
+                'organization_id' => $organizationId,
+                'user_id'         => $user->id,
+                'staff_position'  => 'Fleet Manager',
+                'staff_status'    => 'Active',
+                'staff_level'     => 'Level 1',
+            ]);
+        }
+
         return response()->json([
             'message' => 'User registered successfully',
-            'user'    => $user,
+            'user'    => $user->load('organizationStaff'),
         ], 201);
     }
 
@@ -128,7 +143,7 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete;
+        $request->user()->currentAccessToken()?->delete();
 
         return response()->json(['message' => 'Logged out successfully']);
     }
