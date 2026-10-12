@@ -153,18 +153,63 @@ class FleetApiQATest extends TestCase
         $afterLogoutDriver->assertStatus(401);
     }
 
-    public function test_rbac_drivers_cannot_access_staff_fleet_management_routes(): void
+    public function test_driver_can_read_own_assignments_fuel_and_vehicles_but_cannot_mutate(): void
     {
-        // Driver attempts to list vehicles (protected by ['auth:sanctum', 'staff'])
-        $response = $this->withHeader('Authorization', 'Bearer ' . $this->driverToken)
-            ->getJson('/api/v1/vehicles');
+        $vehicle = Vehicle::create([
+            'name'                    => 'Toyota Hilux QA Read',
+            'type'                    => 'Van',
+            'plate_number'            => 'QA-301-AB',
+            'chasis_number'           => 'CHS-QA-301',
+            'manufacturer'            => 'Toyota',
+            'organization_id'         => $this->organization->id,
+            'status'                  => 'Unassigned',
+            'asset_number'            => 'AST-QA-301',
+            'vehicle_security_number' => 'SEC-QA-301',
+        ]);
 
-        $response->assertStatus(403)
+        $fuel = Fuel::create([
+            'title'              => 'Diesel Tank Read',
+            'fuel_type'          => 'diesel',
+            'reserve_level'      => 100,
+            'unit'               => 'l',
+            'quantity_allocated' => 500,
+            'quantity_remaining' => 450,
+            'organization_id'    => $this->organization->id,
+        ]);
+
+        // Driver CAN read driver assignments
+        $assignResponse = $this->withHeader('Authorization', 'Bearer ' . $this->driverToken)
+            ->getJson("/api/v1/vehicle-assignments/driver/{$this->driver->id}");
+        $assignResponse->assertStatus(200);
+
+        // Driver CAN read fuel options
+        $fuelResponse = $this->withHeader('Authorization', 'Bearer ' . $this->driverToken)
+            ->getJson('/api/v1/fuel');
+        $fuelResponse->assertStatus(200);
+
+        // Driver CAN read vehicle details
+        $vehicleResponse = $this->withHeader('Authorization', 'Bearer ' . $this->driverToken)
+            ->getJson("/api/v1/vehicles/{$vehicle->id}");
+        $vehicleResponse->assertStatus(200);
+
+        // Driver CANNOT mutate vehicles (protected by staff middleware)
+        $mutateResponse = $this->withHeader('Authorization', 'Bearer ' . $this->driverToken)
+            ->postJson('/api/v1/vehicles', [
+                'name' => 'Should Fail',
+            ]);
+        $mutateResponse->assertStatus(403)
             ->assertJsonPath('success', false)
             ->assertJsonPath('message', 'Forbidden: This resource requires corporate staff privileges.');
+
+        // Driver CANNOT mutate fuel
+        $mutateFuelResponse = $this->withHeader('Authorization', 'Bearer ' . $this->driverToken)
+            ->postJson('/api/v1/fuel', [
+                'title' => 'Should Fail',
+            ]);
+        $mutateFuelResponse->assertStatus(403);
     }
 
-    public function test_resource_request_creation_without_sparepart_succeeds(): void
+    public function test_resource_request_creation_with_omitted_with_sparepart_succeeds(): void
     {
         $vehicle = Vehicle::create([
             'name'                    => 'Toyota Hilux QA',
@@ -188,14 +233,15 @@ class FleetApiQATest extends TestCase
             'organization_id'    => $this->organization->id,
         ]);
 
-        $response = $this->withHeader('Authorization', 'Bearer ' . $this->staffToken)
+        // with_sparepart is completely omitted in payload
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->driverToken)
             ->postJson('/api/v1/requests', [
                 'vehicle_id'         => $vehicle->id,
                 'driver_id'          => $this->driver->id,
                 'requestable_type'   => 'fuel',
                 'requestable_id'     => $fuel->id,
-                'quantity_requested' => 50,
-                'with_sparepart'     => false,
+                'quantity_requested' => 45.0,
+                'vehicle_odometer'   => 12540.0,
             ]);
 
         $response->assertStatus(201)

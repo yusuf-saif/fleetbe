@@ -43,27 +43,47 @@ Route::prefix('v1')->group(function () {
         });
     });
 
-    Route::middleware(['auth:sanctum', 'staff'])->group(function () {
-        Route::apiResource('vehicles', VehicleController::class);
-        Route::apiResource('fuel', FuelController::class);
-        Route::apiResource('maintenance', MaintenanceController::class);
-        Route::apiResource('sparepart', SparePartController::class);
-        Route::apiResource('suppliers', SupplierController::class);
-
-        Route::get('vehicle-assignments/current', [VehicleAssignmentController::class, 'currentAssignments']);
-        Route::get('vehicle-assignments/driver/{driver_id}', [VehicleAssignmentController::class, 'assignmentsByDriver']);
-        Route::get('vehicle-assignments/vehicle/{vehicle_id}', [VehicleAssignmentController::class, 'assignmentsByVehicle']);
-        Route::post('vehicle-assignments/{assignment}/release', [VehicleAssignmentController::class, 'release']);
-        Route::apiResource('vehicle-assignments', VehicleAssignmentController::class);
-
-        Route::post('requests/{id}/approve', [RequestsController::class, 'approve']);
-        Route::post('requests/{id}/reject', [RequestsController::class, 'reject']);
-    });
-
+    // Self-service read access for authenticated actors (drivers & staff)
     Route::middleware('auth:sanctum')->group(function () {
+        Route::get('vehicle-assignments/driver/{driver_id}', [VehicleAssignmentController::class, 'assignmentsByDriver']);
+        Route::get('vehicle-assignments/current', [VehicleAssignmentController::class, 'currentAssignments']);
+        Route::get('vehicle-assignments/{vehicle_assignment}', [VehicleAssignmentController::class, 'show']);
+        Route::get('fuel', [FuelController::class, 'index']);
+        Route::get('fuel/{id}', [FuelController::class, 'show']);
+        Route::get('vehicles/{id}', [VehicleController::class, 'show']);
+        Route::get('vehicles', [VehicleController::class, 'index']);
+
         Route::get('requests', [RequestsController::class, 'index']);
         Route::post('requests', [RequestsController::class, 'store']);
         Route::get('requests/{id}', [RequestsController::class, 'show']);
+
+        // Management & mutation actions restricted to corporate staff
+        Route::middleware('staff')->group(function () {
+            Route::post('vehicles', [VehicleController::class, 'store']);
+            Route::put('vehicles/{id}', [VehicleController::class, 'update']);
+            Route::patch('vehicles/{id}', [VehicleController::class, 'update']);
+            Route::delete('vehicles/{id}', [VehicleController::class, 'destroy']);
+
+            Route::post('fuel', [FuelController::class, 'store']);
+            Route::put('fuel/{id}', [FuelController::class, 'update']);
+            Route::patch('fuel/{id}', [FuelController::class, 'update']);
+            Route::delete('fuel/{id}', [FuelController::class, 'destroy']);
+
+            Route::apiResource('maintenance', MaintenanceController::class);
+            Route::apiResource('sparepart', SparePartController::class);
+            Route::apiResource('suppliers', SupplierController::class);
+
+            Route::get('vehicle-assignments/vehicle/{vehicle_id}', [VehicleAssignmentController::class, 'assignmentsByVehicle']);
+            Route::post('vehicle-assignments/{assignment}/release', [VehicleAssignmentController::class, 'release']);
+            Route::get('vehicle-assignments', [VehicleAssignmentController::class, 'index']);
+            Route::post('vehicle-assignments', [VehicleAssignmentController::class, 'store']);
+            Route::put('vehicle-assignments/{vehicle_assignment}', [VehicleAssignmentController::class, 'update']);
+            Route::patch('vehicle-assignments/{vehicle_assignment}', [VehicleAssignmentController::class, 'update']);
+            Route::delete('vehicle-assignments/{vehicle_assignment}', [VehicleAssignmentController::class, 'destroy']);
+
+            Route::post('requests/{id}/approve', [RequestsController::class, 'approve']);
+            Route::post('requests/{id}/reject', [RequestsController::class, 'reject']);
+        });
     });
 });
 

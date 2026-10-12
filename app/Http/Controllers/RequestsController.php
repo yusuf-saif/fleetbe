@@ -128,10 +128,12 @@ class RequestsController extends Controller
             'current_fuel_level' => 'nullable|numeric|min:0',
             'maintenance_type'   => 'nullable|string',
             'description'        => 'nullable|string',
-            'with_sparepart'     => 'required|boolean',
-            'spare_part_id'      => 'nullable|exists:spare_parts,id',
+            'with_sparepart'     => 'sometimes|boolean',
+            'spare_part_id'      => 'nullable|required_if:with_sparepart,true|exists:spare_parts,id',
             'other_sparepart'    => 'nullable|string|max:255',
         ]);
+
+        $validated['with_sparepart'] = (bool) ($validated['with_sparepart'] ?? false);
 
         if (!empty($validated['with_sparepart']) && empty($validated['spare_part_id']) && empty($validated['other_sparepart'])) {
             return response()->json([
