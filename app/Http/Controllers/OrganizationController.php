@@ -94,3 +94,4 @@ class OrganizationController extends Controller
         ]);
     }
 }
+
