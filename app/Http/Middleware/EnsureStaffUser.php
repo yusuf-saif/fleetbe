@@ -46,3 +46,4 @@ class EnsureStaffUser
         return $next($request);
     }
 }
+
